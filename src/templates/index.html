@@ -5,20 +5,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Analysis</title>
+    <title>Text Analysis Options</title>
+    <style>
+        /* Style the tab buttons */
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+    </style>
 </head>
 <body>
-    <form action="/echo_user_input" method="POST" enctype="multipart/form-data">
-        <label for="user_input">Enter Text:</label><br>
-        <input type="text" id="user_input" name="user_input"><br>
+    <h1>Textplorer</h1>
 
-        <label for="file_input">Upload File:</label><br>
-        <input type="file" id="file_input" name="file_input"><br>
+    <!-- Tab links -->
+    <div class="tab">
+        <button class="tablinks active" onclick="openOption(event, 'Option1')">Option 1</button>
+        <button class="tablinks" onclick="openOption(event, 'Option2')">Option 2</button>
+        <button class="tablinks" onclick="openOption(event, 'Option3')">Option 3</button>
+    </div>
 
-        <label for="textarea_input">Textarea:</label><br>
-        <textarea id="textarea_input" name="textarea_input" rows="4" cols="50"></textarea><br>
+    <!-- Tab content -->
+    <div id="Option1" class="tabcontent" style="display: block;">
+        <h2>Option 1: Large Input</h2>
+        <form action="/echo?selected_option=large_input" method="POST"> <!-- Include selected_option -->
+            <textarea name="large_input" rows="10" cols="50"></textarea><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
 
-        <input type="submit" value="Submit!">
-    </form>
+    <div id="Option2" class="tabcontent">
+        <h2>Option 2: Upload Text Files</h2>
+        <p>To select multiple files, hold on to 'Ctrl' key in Windows and select each file.</p>
+        <p>Key may differ in macOS and Linux.</p>
+
+
+        <form action="/echo?selected_option=files_input" method="POST" enctype="multipart/form-data"> <!-- Include selected_option -->
+            <input id="fileInput" type="file" name="file_input" multiple><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <div id="Option3" class="tabcontent">
+        <h2>Option 3: Random Animal Names</h2>
+        <form action="/echo?selected_option=animal_names" method="POST"> <!-- Include selected_option -->
+            <select name="animal_names">
+                <option value="lion">Lion</option>
+                <option value="elephant">Elephant</option>
+                <option value="zebra">Zebra</option>
+            </select><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <script>
+        // Function to open the selected option tab
+        function openOption(evt, optionName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(optionName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+            // Get the file input element
+        const fileInput = document.getElementById('fileInput');
+
+        // Add event listener for change event
+        fileInput.addEventListener('change', function(event) {
+            // Get the selected file(s)
+            const files = fileInput.files;
+
+            // Check each selected file
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const fileName = file.name.toLowerCase();
+
+                // Check if the file extension is not '.txt'
+                if (!fileName.endsWith('.txt')) {
+                    alert('Please select only .txt files.');
+                    // Clear the file input
+                    fileInput.value = '';
+                    // Prevent form submission
+                    event.preventDefault();
+                    return;
+                }
+            }
+        });
+    </script>
 </body>
 </html>

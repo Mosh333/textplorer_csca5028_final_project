@@ -1,0 +1,55 @@
+Consider the toilet — that humble porcelain bowl that spirits away our waste several times a day. It’s not a piece of technology that often gets flashy updates (though dual flushing, seat warming and electronic bidet features can certainly elevate it), nor is it a darling of the design world.
+
+But toilets are in desperate need of an upgrade — as is our entire approach to sewage, according to the many designers, environmental engineers and sanitation experts hoping to bring about a paradigm shift.
+
+Flushing our waste is, well, wasteful, accounting for nearly a third of indoor water use in U.S. homes, according to the Environmental Protection Agency (EPA). In many parts of the world, the use of water toilets has become increasingly fraught as climate change ushers in extreme droughts and flooding, which backs up sewers and overflows septic tanks. In disaster zones, or places without access to running water, the need for innovation is even more urgent.
+
+Rethinking how we deal with waste may also present an opportunity: Our excrement can be converted into renewable heat, electricity and fertilizer.
+
+“Waste is not waste, it’s a resource,” said Arja Renell, a Finnish artist and architect who brought the topic to last year’s Venice Architecture Biennale as the curator of her country’s pavilion. She wasn’t an expert in the field, but had been alarmed to learn that some of Venice’s wastewater is flushed directly into its canals and wanted to demonstrate a circular approach to sanitation: the “dry” toilet.
+
+Known as a “Huussi” in Finnish, the dry toilet separates urine from stool and is ventilated to keep odours out — In Finland, dry toilets are particularly prevalent in rural summer cottages, Renell told CNN in a video call. Users layer the contents of the toilet’s bin with peat or sawdust after doing their business; once full, they move the excrement to a larger airtight container over the course of several months so that any microorganisms die out.
+
+The remaining material, rich in nitrogen and phosphorus, can be used as natural fertilizer rather than the usual greenhouse gas-emitting synthetic kind.
+
+The dry composting method will be familiar to those with off-grid homes. In the US, dry compost toilets have long been built as alternatives to flush toilets in rural homes that aren’t connected to a sewage system, or by people who can’t afford to install a neutralizing septic tank, which can cost thousands of dollars. Kelsey McWilliams, an environmental engineer who builds circular sanitation systems around the country with her company Point of Shift, said the need for sustainable solutions will only grow in drought- or flood-stricken areas.
+
+“There are multiple states right now where people are working on changing the current building codes to allow not only compost toilets, but more innovative solutions for people who want them,” she told CNN. “Septic tanks are great — they served a purpose. They’re a very old type of technology, and they still generally protect our wells from human waste and bacteria. But there are better solutions.”
+
+Expanding the use of dry compost toilets poses formidable challenges, however, from state- or county-level regulations right down to personal preferences. They can be difficult to install in urban settings and hard to maintain in anything larger than a single-family home. There’s also the matter of time: Waiting up to a year for waste to be safely recycled will deter many people — and the ick factor may be hard to shake.
+
+“It’s asking people to care about something that they’re biologically attuned to be averse to,” McWilliams said.
+
+Disappearing act
+But what if your poo could, for the most part, disappear from your toilet? That’s the question being asked by Change:WATER Labs, a startup led by scientist and entrepreneur Diana Yousef which is patenting an evaporative material that aims to reduce the volume of waste build-up by as much as 97% in a single day.
+
+“We have developed a technology that we lovingly term ‘shrink wrap for crap,’” Yousef explained on a phone call.
+
+Change:WATER Labs’ low-cost and entirely waterless portable toilet, dubbed the “iThrone,” stores human waste in a pouch lined with the proprietary material. What’s left still needs to be collected and treated — it’s recyclable, but not neutralized — but only needs to be retrieved once every one to two months, Yousef said. (Imagine a porta-potty after that long, for context.)
+
+Since receiving funding in 2018 from the Humanitarian Grand Challenge, an international acceleration award, the iThrone has been piloted in vulnerable communities without access to safe sanitation in Uganda and Panama. Change:WATER Labs hopes to scale up the project. Last year, the WHO and UNICEF’s Joint Monitoring Programme estimated that around 3.5 billion people — 43% of the world’s population — have no access to a toilet or latrine connected to wastewater treatment or safe disposal. Nearly a billion of those people use unsafe pit latrines or buckets, or defecate in the open.
+
+“When you shrink the waste at the point of production, essentially, you do a better job of containing it hygienically, so it cleans up communities.” Yousef said. “But then on top of that you are not using, or polluting, any water.”
+
+Though the current version of the iThrone doesn’t yet put excrement to good use, future versions may be able to turn evaporated moisture from urine or feces into potable water, or convert the remaining stored waste into renewable energy, according to Yousef, who said the product will “get more sophisticated” with time.
+
+“I don’t think anyone living in a house with a flush toilet is within five or 10 years of saying, ‘Yeah, I want to give that up,’” she said. “But there are so many other applications. And they’re not all just for low-income or distressed, fragile populations. There’s public sanitation, green building, transportation. And there are so many places where people are tied to septic tanks.”
+
+Upcycling waste
+In cities with developed sewer systems, radical change may take place out of sight. As California deals with worsening drought, for example, San Francisco now requires new buildings larger than 100,000 square feet to have onsite wastewater recycling systems. Local startup Epic Cleantec, which built the city’s first greywater reuse system in the luxury high-rise Fifteen Fifty, is bringing its system to residential developments, corporate campuses, factories and hotels around the state.
+
+At a new coastal development in the Swedish city of Helsingborg, meanwhile, a traditional sewage plant has been completely revamped into an innovative new treatment facility called RecoLab (which is short for “Recovery Lab”). A striking, building that ventilates high in the air, to keep odours at bay, RecoLab connects to every building in the new district through a three-pipe system that separates and recycles water containing human waste (or blackwater) from low-water vacuum-based toilets, greywater from bathtubs and washing machines, and organic matter from food disposal systems. By 2030, when the housing development is complete, RecoLab will serve 2,500 residents.
+
+“When you’re ‘source-separating’ the wastewater, it’s the same principle as when you’re separating plastic from metal — it’s easier to recycle,” explained Amanda Haux, business developer at RecoLab.
+
+“Ninety-four percent of the wastewater in our cities is actually very easy to clean,” she said, but mixing in blackwater contaminates what could be a reusable resource.
+
+As with dry composting toilets, RecoLab extracts nitrogen and phosphorus from human waste — as well as from food compost — and turns them into fertilizer pellets at a nearby factory. Biogas from recycled waste is converted into heating, while recycled water is used in the community swimming pool. As of now, the plant does not recycle graywater, due to strict Swedish government regulations on repurposing wastewater for drinking. But Haux is hoping that will change, particularly in municipalities where water shortages may become more common due to climate change.
+
+To demonstrate the project’s circularity, Haux hopes to eventually open a rooftop garden and restaurant on RecoLab’s premises, using its recycled fertilizer and water to grow ingredients. “The purpose is to raise awareness about wastewater as a resource. We shouldn’t hide it away in our cities,” she said. “This is actually a low-hanging fruit when we’re talking about circulation.”
+
+At the Venice Biennale, Renell invited Haux to talk about RecoLab in a fall seminar on new approaches to waste. The humble dry toilet and a large-scale urban sewage system may be at opposite ends of the spectrum, but they are both solutions to the same problem.
+
+“So many people get so excited about this topic,” Renell said. “Of course, the urban scale feels a bit more daunting, but even within that, there are these amazing examples going on.”
+
+“Going to the toilet needs to be quite simple,” Renell said. “If we want to compete with the current system, we need to provide something equally easy.”

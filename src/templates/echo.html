@@ -9,9 +9,24 @@
 </head>
 <body>
     <h1>Echo Page</h1>
-    <p>You entered: {{ input_text }}</p>
-    <p>File size: {{ file_size }} bytes</p>
-    <p>Textarea content:</p>
-    <p>{{ textarea_input }}</p>
+
+    <!-- Display echoed file upload data -->
+    <div>
+
+    </div>
+    <div>
+        {% if selected_option == "large_input" %}
+            <h2>Echoed Large Input Data:</h2>
+            <p>{{ large_input }}</p>
+        {% elif selected_option == "files_input" %}
+            <h2>Echoed File Upload Data:</h2>
+            <ul>
+                <!-- Use Jinja templating syntax to iterate over each item in the list-->
+                {% for file_info in files_info %}
+                    <li>Filename: {{ file_info.filename }}, Size: {{ file_info.file_size }} bytes</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 </body>
 </html>
