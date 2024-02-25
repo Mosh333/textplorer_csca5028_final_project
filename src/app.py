@@ -1,6 +1,7 @@
 # app.py
 
-from flask import Flask
+from flask import Flask, request
+from prometheus_flask_exporter import PrometheusMetrics
 from routes import setup_routes
 
 app = Flask(__name__)

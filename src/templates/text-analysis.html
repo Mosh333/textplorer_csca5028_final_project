@@ -1,0 +1,36 @@
+<!-- text-analysis.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Page</title>
+</head>
+<body>
+<h1>Echo Page</h1>
+
+<!-- Display echoed file upload data -->
+<div>
+
+</div>
+<div>
+    {% if selected_option == "text_input" %}
+        <h2>Echoed Large Input Data:</h2>
+        <p>{{ text_input }}</p>
+    {% elif selected_option == "files_input" %}
+        <h2>Echoed File Upload Data:</h2>
+        <ul>
+            <!-- Use Jinja templating syntax to iterate over each item in the list-->
+            {% for file_info in files_info %}
+                <li>Filename: {{ file_info.filename }}, Size: {{ file_info.file_size }} bytes</li>
+            {% endfor %}
+        </ul>
+    {% elif selected_option == "news_article_sources" %}
+        <h2>Selected News Provider Random Article Analysis:</h2>
+        <p>Selected Provider: {{ selected_name }}</p>
+        <p>Provider URL: <a href="{{ selected_url }}">{{ selected_url }}</a></p>
+    {% endif %}
+</div>
+</body>
+</html>

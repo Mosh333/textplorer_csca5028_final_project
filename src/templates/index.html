@@ -46,88 +46,105 @@
     </style>
 </head>
 <body>
-    <h1>Textplorer</h1>
+<h1>Textplorer</h1>
 
-    <!-- Tab links -->
-    <div class="tab">
-        <button class="tablinks active" onclick="openOption(event, 'Option1')">Option 1</button>
-        <button class="tablinks" onclick="openOption(event, 'Option2')">Option 2</button>
-        <button class="tablinks" onclick="openOption(event, 'Option3')">Option 3</button>
-    </div>
+<!-- Tab links -->
+<div class="tab">
+    <button class="tablinks active" onclick="openOption(event, 'Option1')">Option 1</button>
+    <button class="tablinks" onclick="openOption(event, 'Option2')">Option 2</button>
+    <button class="tablinks" onclick="openOption(event, 'Option3')">Option 3</button>
+</div>
 
-    <!-- Tab content -->
-    <div id="Option1" class="tabcontent" style="display: block;">
-        <h2>Option 1: Large Input</h2>
-        <form action="/echo?selected_option=large_input" method="POST"> <!-- Include selected_option -->
-            <textarea name="large_input" rows="10" cols="50"></textarea><br>
-            <input type="submit" value="Submit">
-        </form>
-    </div>
+<!-- Tab content -->
+<div id="Option1" class="tabcontent" style="display: block;">
+    <h2>Option 1: Large Input</h2>
+    <form action="/text-analy?selected_option=text_input" method="POST"> <!-- Include selected_option -->
+        <textarea name="text_input" rows="10" cols="50"></textarea><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
 
-    <div id="Option2" class="tabcontent">
-        <h2>Option 2: Upload Text Files</h2>
-        <p>To select multiple files, hold on to 'Ctrl' key in Windows and select each file.</p>
-        <p>Key may differ in macOS and Linux.</p>
+<div id="Option2" class="tabcontent">
+    <h2>Option 2: Upload Text Files</h2>
+    <p>To select multiple files, hold the 'Ctrl' key (Windows) or the 'Command' key (Mac) and select each file.</p>
+    <p>Key bindings may differ in macOS and Linux.</p>
 
+    <form action="/text-analy?selected_option=files_input" method="POST" enctype="multipart/form-data"
+          onsubmit="return validateForm()"> <!-- Include selected_option -->
+        <input id="fileInput" type="file" name="file_input" multiple><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
 
-        <form action="/echo?selected_option=files_input" method="POST" enctype="multipart/form-data"> <!-- Include selected_option -->
-            <input id="fileInput" type="file" name="file_input" multiple><br>
-            <input type="submit" value="Submit">
-        </form>
-    </div>
+<div id="Option3" class="tabcontent">
+    <h2>Option 3: News RSS Feeds</h2>
+    <form action="/text-analy?selected_option=news_article_sources" method="POST"> <!-- Include selected_option -->
+        <select name="news_article_sources">
+            <option value='{"name": "CTV News", "url": "https://www.ctvnews.ca/rss/ctvnews-ca-top-stories-public-rss"}'>
+                CTV News
+            </option>
+            <option value='{"name": "Washington Post", "url": "https://feeds.washingtonpost.com/rss/world"}'>Washington
+                Post
+            </option>
+            {#            alternatively https://feeder.co/discover/c31d3fd15b/aljazeera-com-default-html#}
+            <option value='{"name": "Al Jazeera", "url": "https://feeder.co/discover/9f94548972/aljazeera-com-default-html"}'>
+                Al Jazeera
+            </option>
+            {# Al Jazeera English #}
+        </select><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
 
-    <div id="Option3" class="tabcontent">
-        <h2>Option 3: Random Animal Names</h2>
-        <form action="/echo?selected_option=animal_names" method="POST"> <!-- Include selected_option -->
-            <select name="animal_names">
-                <option value="lion">Lion</option>
-                <option value="elephant">Elephant</option>
-                <option value="zebra">Zebra</option>
-            </select><br>
-            <input type="submit" value="Submit">
-        </form>
-    </div>
-
-    <script>
-        // Function to open the selected option tab
-        function openOption(evt, optionName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(optionName).style.display = "block";
-            evt.currentTarget.className += " active";
+<script>
+    // Function to open the selected option tab
+    function openOption(evt, optionName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
         }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(optionName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
 
-            // Get the file input element
-        const fileInput = document.getElementById('fileInput');
+    // Get the file input element
+    const fileInput = document.getElementById('fileInput');
 
-        // Add event listener for change event
-        fileInput.addEventListener('change', function(event) {
-            // Get the selected file(s)
-            const files = fileInput.files;
+    // Add event listener for change event
+    fileInput.addEventListener('change', function (event) {
+        // Get the selected file(s)
+        const files = fileInput.files;
 
-            // Check each selected file
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const fileName = file.name.toLowerCase();
+        // Check each selected file
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const fileName = file.name.toLowerCase();
 
-                // Check if the file extension is not '.txt'
-                if (!fileName.endsWith('.txt')) {
-                    alert('Please select only .txt files.');
-                    // Clear the file input
-                    fileInput.value = '';
-                    // Prevent form submission
-                    event.preventDefault();
-                    return;
-                }
+            // Check if the file extension is not '.txt'
+            if (!fileName.endsWith('.txt')) {
+                alert('Please select only .txt files.');
+                // Clear the file input
+                fileInput.value = '';
+                // Prevent form submission
+                event.preventDefault();
+                return;
             }
-        });
-    </script>
+        }
+    });
+
+    function validateForm() {
+        // Check if any file has been selected
+        if (fileInput.files.length === 0) {
+            alert('You need to attach a file.');
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+</script>
 </body>
 </html>
