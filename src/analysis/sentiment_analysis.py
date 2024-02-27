@@ -165,33 +165,32 @@ def sentiment_domain_analysis(text: str) -> str:
 
     return max_category
 
-
 # Example usage:
-text = "The new international policies to control global warming is underway."
-sentiment, emotion = sentiment_emotion_analysis(text)
-domain_category = sentiment_domain_analysis(text)
-
-print("Sentiment:", sentiment)
-print("Emotion:", emotion)
-print("Domain Category:", domain_category)
-text = "The iPhone technology is being released soon which will revolutionize everything!"
-sentiment, emotion = sentiment_emotion_analysis(text)
-domain_category = sentiment_domain_analysis(text)
-
-print("Sentiment:", sentiment)
-print("Emotion:", emotion)
-print("Domain Category:", domain_category)
-text = "The iPhone technology is being released soon which will revolutionize smartphones forever!"
-sentiment, emotion = sentiment_emotion_analysis(text)
-domain_category = sentiment_domain_analysis(text)
-
-print("Sentiment:", sentiment)
-print("Emotion:", emotion)
-print("Domain Category:", domain_category)
-text = "My cat is like a fat cat that eat cat food. Bites me too."
-sentiment, emotion = sentiment_emotion_analysis(text)
-domain_category = sentiment_domain_analysis(text)
-
-print("Sentiment:", sentiment)
-print("Emotion:", emotion)
-print("Domain Category:", domain_category)
+# text = "The new international policies to control global warming is underway."
+# sentiment, emotion = sentiment_emotion_analysis(text)
+# domain_category = sentiment_domain_analysis(text)
+#
+# print("Sentiment:", sentiment)
+# print("Emotion:", emotion)
+# print("Domain Category:", domain_category)
+# text = "The iPhone technology is being released soon which will revolutionize everything!"
+# sentiment, emotion = sentiment_emotion_analysis(text)
+# domain_category = sentiment_domain_analysis(text)
+#
+# print("Sentiment:", sentiment)
+# print("Emotion:", emotion)
+# print("Domain Category:", domain_category)
+# text = "The iPhone technology is being released soon which will revolutionize smartphones forever!"
+# sentiment, emotion = sentiment_emotion_analysis(text)
+# domain_category = sentiment_domain_analysis(text)
+#
+# print("Sentiment:", sentiment)
+# print("Emotion:", emotion)
+# print("Domain Category:", domain_category)
+# text = "My cat is like a fat cat that eat cat food. Bites me too."
+# sentiment, emotion = sentiment_emotion_analysis(text)
+# domain_category = sentiment_domain_analysis(text)
+#
+# print("Sentiment:", sentiment)
+# print("Emotion:", emotion)
+# print("Domain Category:", domain_category)

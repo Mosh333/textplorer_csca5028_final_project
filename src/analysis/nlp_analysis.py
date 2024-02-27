@@ -70,12 +70,11 @@ def ner(text: str) -> list:
 
     return named_entities
 
-
-text = "Google is currently earning record breaking revenue despite hard times."
-
-# Perform POS tagging
-pos_counts_result = pos_tagging(text)
-print("POS Counts:", pos_counts_result)
-
-ner_result = ner(text)
-print("Named Entities:", ner_result)
+# text = "Google is currently earning record breaking revenue despite hard times."
+#
+# # Perform POS tagging
+# pos_counts_result = pos_tagging(text)
+# print("POS Counts:", pos_counts_result)
+#
+# ner_result = ner(text)
+# print("Named Entities:", ner_result)

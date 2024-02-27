@@ -157,35 +157,34 @@ def get_difficulty_level(text: str) -> str:
     else:
         return "University"
 
-
-sample_text = """
-A file system is a method an operating system uses to store, organize, and manage files and directories on a storage device. 
-Some common types of file systems include: FAT (File Allocation Table): An older file system used by older versions of Windows and other operating systems. 
-NTFS (New Technology File System): A modern file system used by Windows. It supports features such as file and folder permissions, compression, and encryption. ext (Extended File System): 
-A file system commonly used on Linux and Unix-based operating systems. HFS (Hierarchical File System): A file system used by macOS. APFS (Apple File System): 
-A new file system introduced by Apple for their Macs and iOS devices.
-"""
-
-# Test word_count
-print("Word Count:", word_count(sample_text))
-
-print("Number of Characters (excluding spaces):", num_characters_without_spaces(sample_text))
-
-print("Number of Syllables:", num_syllables(sample_text))
-
-print("Number of Sentences:", num_sentences(sample_text))
-
-print("Number of Paragraphs:", num_paragraphs(sample_text))
-
-print("Average Word Size:", average_word_size(sample_text))
-
-print("Average Sentence Size:", average_sentences_size(sample_text))
-
-print("Estimated Reading Time:", estimated_reading_time(sample_text), "minutes")
-
-top_words = top_n_words(sample_text)
-print("Top 5 Most Common Words:")
-for word, freq in top_words:
-    print(word, "-", freq)
-
-print("Difficulty Level:", get_difficulty_level(sample_text))
+# sample_text = """
+# A file system is a method an operating system uses to store, organize, and manage files and directories on a storage device.
+# Some common types of file systems include: FAT (File Allocation Table): An older file system used by older versions of Windows and other operating systems.
+# NTFS (New Technology File System): A modern file system used by Windows. It supports features such as file and folder permissions, compression, and encryption. ext (Extended File System):
+# A file system commonly used on Linux and Unix-based operating systems. HFS (Hierarchical File System): A file system used by macOS. APFS (Apple File System):
+# A new file system introduced by Apple for their Macs and iOS devices.
+# """
+#
+# # Test word_count
+# print("Word Count:", word_count(sample_text))
+#
+# print("Number of Characters (excluding spaces):", num_characters_without_spaces(sample_text))
+#
+# print("Number of Syllables:", num_syllables(sample_text))
+#
+# print("Number of Sentences:", num_sentences(sample_text))
+#
+# print("Number of Paragraphs:", num_paragraphs(sample_text))
+#
+# print("Average Word Size:", average_word_size(sample_text))
+#
+# print("Average Sentence Size:", average_sentences_size(sample_text))
+#
+# print("Estimated Reading Time:", estimated_reading_time(sample_text), "minutes")
+#
+# top_words = top_n_words(sample_text)
+# print("Top 5 Most Common Words:")
+# for word, freq in top_words:
+#     print(word, "-", freq)
+#
+# print("Difficulty Level:", get_difficulty_level(sample_text))
