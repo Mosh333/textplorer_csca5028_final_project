@@ -1,5 +1,5 @@
 src/__pycache__/
 src/analysis/__pycache__/
-src/data-collection/__pycache__/
+src/data_collection/__pycache__/
 src/models/__pycache__/
 .idea
