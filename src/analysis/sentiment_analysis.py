@@ -10,13 +10,15 @@ from nltk.stem import WordNetLemmatizer
 import nltk
 import re
 
-# Download NLTK resources
+
+# For heroku, only download once, nltk.txt and post_compile will take care of the rest
+# Uncomment below for local testing for downloading NLTK resources
 # https://www.nltk.org/api/nltk.tokenize.punkt.html
-nltk.download('punkt')
-# https://www.nltk.org/search.html?q=stopwords
-nltk.download('stopwords')
-# https://www.nltk.org/howto/wordnet.html
-nltk.download('wordnet')
+# nltk.download('punkt')
+# # https://www.nltk.org/search.html?q=stopwords
+# nltk.download('stopwords')
+# # https://www.nltk.org/howto/wordnet.html
+# nltk.download('wordnet')
 
 
 def preprocess_text(text: str) -> str:

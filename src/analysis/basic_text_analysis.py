@@ -8,7 +8,12 @@ import nltk
 import textstat  # https://pypi.org/project/textstat/
 from nltk.corpus import stopwords
 
-# Download NLTK resources if these resources do not exist to avoid deployment issues in heroku system
+# For heroku, only download once, nltk.txt and post_compile will take care of the rest
+# Uncomment below for local testing for downloading NLTK resources
+# nltk.download('punkt')
+#
+# nltk.download('stopwords')
+
 if not nltk.data.find('tokenizers/punkt'):
     # https://www.nltk.org/api/nltk.tokenize.punkt.html
     nltk.download('punkt')

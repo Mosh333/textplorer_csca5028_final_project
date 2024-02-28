@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Run NLTK download script based on requirements of each script
+python -m nltk.downloader -d /app/nltk_data punkt stopwords wordnet averaged_perceptron_tagger maxent_ne_chunker words

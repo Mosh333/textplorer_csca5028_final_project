@@ -6,19 +6,21 @@ import nltk
 from nltk.tokenize import word_tokenize
 from collections import Counter
 
-# Download NLTK resources
+
+# For heroku, only download once, nltk.txt and post_compile will take care of the rest
+# # Uncomment below for local testing for downloading NLTK resources
 # https://www.nltk.org/api/nltk.tokenize.punkt.html
-nltk.download('punkt')  # for tokenization
-
-# https://www.nltk.org/_modules/nltk/tag/perceptron.html
-# https://www.kaggle.com/datasets/nltkdata/averaged-perceptron-tagger
-nltk.download('averaged_perceptron_tagger')  # for part of speech tagging
-
-# https://www.nltk.org/_modules/nltk/chunk.html
-# https://www.kaggle.com/datasets/nltkdata/maxent-ne-chunker
-nltk.download('maxent_ne_chunker')  # for name entity relationship
-
-nltk.download('words')  # for list of common English words
+# nltk.download('punkt')  # for tokenization
+#
+# # https://www.nltk.org/_modules/nltk/tag/perceptron.html
+# # https://www.kaggle.com/datasets/nltkdata/averaged-perceptron-tagger
+# nltk.download('averaged_perceptron_tagger')  # for part of speech tagging
+#
+# # https://www.nltk.org/_modules/nltk/chunk.html
+# # https://www.kaggle.com/datasets/nltkdata/maxent-ne-chunker
+# nltk.download('maxent_ne_chunker')  # for name entity relationship
+#
+# nltk.download('words')  # for list of common English words
 
 
 # if above does not work, see the download outputs from nltk.download("all")
