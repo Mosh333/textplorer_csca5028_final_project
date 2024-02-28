@@ -8,11 +8,13 @@ import nltk
 import textstat  # https://pypi.org/project/textstat/
 from nltk.corpus import stopwords
 
-# Download NLTK resources
-# https://www.nltk.org/api/nltk.tokenize.punkt.html
-nltk.download('punkt')
-# https://www.nltk.org/search.html?q=stopwords
-nltk.download('stopwords')
+# Download NLTK resources if these resources do not exist to avoid deployment issues in heroku system
+if not nltk.data.find('tokenizers/punkt'):
+    # https://www.nltk.org/api/nltk.tokenize.punkt.html
+    nltk.download('punkt')
+if not nltk.data.find('corpora/stopwords'):
+    # https://www.nltk.org/search.html?q=stopwords
+    nltk.download('stopwords')
 
 
 def word_count(text: str) -> int:
