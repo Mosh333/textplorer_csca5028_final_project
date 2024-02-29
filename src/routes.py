@@ -1,4 +1,5 @@
 # routes.py
+import datetime
 
 from flask import request, render_template, json
 from prometheus_client import metrics
@@ -6,7 +7,7 @@ from prometheus_flask_exporter import PrometheusMetrics
 from src.analysis.full_analysis import compute_full_analysis
 from src.data_collection.fetch_random_news_article import fetch_random_ctv_news_article_paragraphs, \
     fetch_random_aljazeeera_post_article_paragraphs, fetch_random_abcnews_post_article_paragraphs
-from src.models.database import insert_analysis_results
+from src.models.database import insert_analysis_results, fetch_database_info
 
 
 def setup_routes(app):
@@ -23,7 +24,9 @@ def setup_routes(app):
             # Handle large input option
             text_input = request.form.get("text_input", "")
             analysis_result = compute_full_analysis(text_input)
-            insert_analysis_results({"text_input": text_input, "analysis_result": analysis_result})
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            insert_analysis_results(
+                {"text_input": text_input, "analysis_result": analysis_result, "timestamp": timestamp})
             # Process the large input as needed
             return render_template("text-analysis.html", selected_option=selected_option, text_input=text_input,
                                    analysis_result=analysis_result)
@@ -48,7 +51,8 @@ def setup_routes(app):
 
             # perform an insert for each file input
             for filename, result in analysis_results.items():
-                insert_analysis_results({"filename": filename, "analysis_result": result})
+                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                insert_analysis_results({"filename": filename, "analysis_result": result, "timestamp": timestamp})
 
             # Render the echo page with the uploaded file information
             return render_template("text-analysis.html", selected_option=selected_option, files_info=files_info,
@@ -72,9 +76,11 @@ def setup_routes(app):
                     return "Invalid news outlet source selected"
 
                 analysis_result = compute_full_analysis(article_text_data)
+                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
                 insert_analysis_results({"selected_name": selected_name, "selected_url": selected_url,
-                                         "article_text_data": article_text_data, "analysis_result": analysis_result})
+                                         "article_text_data": article_text_data, "analysis_result": analysis_result,
+                                         "timestamp": timestamp})
 
                 return render_template("text-analysis.html", selected_option=selected_option,
                                        selected_name=selected_name,
@@ -93,3 +99,10 @@ def setup_routes(app):
     @app.route("/monitoring")
     def monitoring():
         return render_template("prometheus.html")
+
+    @app.route("/database_info")
+    def database_info():
+        # looks like {'database_table_name': dynamodb_table, 'aws_region': aws_region, 'total_rows_data': count}
+        database_dict = fetch_database_info()
+
+        return render_template("database_info.html", database_dict=database_dict)

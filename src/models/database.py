@@ -40,6 +40,16 @@ def insert_analysis_results(analysis_results: dict):
     print("Analysis results inserted successfully:")
     print(response)
 
+
+def fetch_database_info():
+    # return a dictionary containing some dynamodb db table information
+    database_dict = {'database_table_name': dynamodb_table, 'aws_region': aws_region}
+    table = dynamodb.Table(dynamodb_table)
+    response = table.scan(Select='COUNT')
+    total_count = response['Count']
+    database_dict['total_rows_data'] = total_count
+    return database_dict
+
 # sample_text = """
 # A file system is a method an operating system uses to store, organize, and manage files and directories on a storage device.
 # Some common types of file systems include: FAT (File Allocation Table): An older file system used by older versions of Windows and other operating systems.

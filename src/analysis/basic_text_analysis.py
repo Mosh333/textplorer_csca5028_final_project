@@ -137,6 +137,9 @@ def top_n_words(text: str, n: int = 5) -> list:
 
     words = nltk.word_tokenize(text)
 
+    # Remove single and double character entries that do not consist entirely of alphabets
+    words = [word for word in words if len(word) > 2 or word.isalpha()]
+
     # Remove common words (stop words)
     stop_words = set(stopwords.words('english'))
     words = [word for word in words if word not in stop_words]
