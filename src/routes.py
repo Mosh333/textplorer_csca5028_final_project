@@ -40,12 +40,13 @@ def setup_routes(app):
                 # Process each uploaded file
                 filename = file.filename
                 file_size = len(file.read())
-                # Add filename and file size to files_info list
-                files_info.append({"filename": filename, "file_size": file_size})
-
-                # Analyze content of each file
                 file.seek(0)
                 text_data = file.read().decode("utf-8")
+                # Add filename and file size to files_info list
+                files_info.append({"filename": filename, "file_size": file_size, "text_content": text_data})
+
+                # Analyze content of each file
+
                 single_analysis_result = compute_full_analysis(text_data)
                 analysis_results[filename] = single_analysis_result
 
@@ -54,6 +55,7 @@ def setup_routes(app):
                 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 insert_analysis_results({"filename": filename, "analysis_result": result, "timestamp": timestamp})
 
+            print(analysis_results)
             # Render the echo page with the uploaded file information
             return render_template("text-analysis.html", selected_option=selected_option, files_info=files_info,
                                    analysis_results=analysis_results)
