@@ -201,6 +201,16 @@
                     </tr>
                 {% endfor %}
             </table>
+            <div class="links-container">
+                <p>For more information on POS tags, you can visit:</p>
+                <ul>
+                    <li><a href="https://stackoverflow.com/questions/15388831/what-are-all-possible-pos-tags-of-nltk"
+                           target="_blank">Stack Overflow - Possible POS tags of NLTK</a></li>
+                    <li><a href="https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html"
+                           target="_blank">Penn Treebank POS Tags</a></li>
+                </ul>
+            </div>
+            <hr>
             <script>
                 // Extracting data from Python dictionary for top 5 words
                 const top5WordsData_{{ loop.index }} = {{ analysis_results[file_info.filename]['basic_text_analysis_dict'].top_n_words | tojson }};
