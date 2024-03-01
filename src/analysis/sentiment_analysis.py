@@ -99,7 +99,7 @@ def sentiment_domain_analysis(text: str) -> str:
             "animation", "reality TV", "soap operas", "musicals", "streaming", "netflix", "amazon prime",
             "stand-up comedy", "talent shows", "game shows", "music videos", "music awards", "radio stations",
             "talk shows", "late-night shows", "animation", "virtual reality", "youtube", "podcasts", "audio books",
-            "magazines", "photography", "fine arts"
+            "magazines", "photography", "fine arts", "artist"
         ],
         'politics': [
             "government", "election", "policy", "politician", "legislation", "president", "parliament", "cabinet",
