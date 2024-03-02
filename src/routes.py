@@ -1,7 +1,9 @@
 # routes.py
 import datetime
+import os
 
-from flask import request, render_template, json
+import boto3
+from flask import request, render_template, json, jsonify, current_app
 from prometheus_client import metrics
 from prometheus_flask_exporter import PrometheusMetrics
 from src.analysis.full_analysis import compute_full_analysis
@@ -96,8 +98,18 @@ def setup_routes(app):
 
     @app.route("/metrics")
     def production_monitoring():
-        return PrometheusMetrics(app).export()
+        return PrometheusMetrics(app)  # .export()
 
+    @app.route('/health_check')
+    def health_check():
+        health_status = application_is_healthy(current_app)
+        if health_status["status"] == "ok":
+            return jsonify(health_status)
+        else:
+            return jsonify(health_status), 500
+
+    # Please note the below only works locally, for production monitoring, I have used Better Uptime's Better Stack
+    # monitoring tool
     @app.route("/monitoring")
     def monitoring():
         return render_template("prometheus.html")
@@ -108,3 +120,33 @@ def setup_routes(app):
         database_dict = fetch_database_info()
 
         return render_template("database_info.html", database_dict=database_dict)
+
+
+def application_is_healthy(flask_app):
+    try:
+        # Check database connection
+        dynamodb = boto3.client('dynamodb',
+                                aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+                                aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+                                region_name=os.getenv('AWS_REGION'))
+
+        # List tables to check if the connection is successful
+        tables = dynamodb.list_tables()
+
+        # Check if the list_tables operation succeeded
+        if 'TableNames' in tables:
+            # Use Flask test client to check route accessibility
+            with flask_app.test_client() as client:
+                # Check if the "/" route is accessible
+                response_root = client.get("/")
+                response_database_info = client.get("/database_info")
+
+                # Check if the responses are successful (status code 200)
+                if response_root.status_code == 200 and response_database_info.status_code == 200:
+                    return {"status": "ok"}
+                else:
+                    return {"status": "error", "message": "Failed to access one or more routes"}
+        else:
+            return {"status": "error", "message": "Failed to connect to the database"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
