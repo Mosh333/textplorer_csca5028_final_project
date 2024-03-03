@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Style for the back button */
-        .back-button {
+        .green-button {
             background-color: #4CAF50; /* Green */
             border: none;
             color: white;
@@ -19,6 +19,7 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-right: 10px; /* Add margin between buttons */
         }
 
         /* Hover effect for the button */
@@ -83,7 +84,20 @@
 <body>
 <h1>Texplorer</h1>
 
-<button class="back-button" onclick="window.open('/database_info', '_blank');">Go to Database Info</button>
+<div class="button-row">
+    <button class="green-button back-button" onclick="window.open('/database_info', '_blank');">Go to Database Info
+    </button>
+    <button class="green-button" onclick="window.open('/health_check', '_blank');">Healthcheck</button>
+    <button class="green-button monitoring-button" onclick="window.open('/monitoring', '_blank');">Prometheus
+        Monitoring
+    </button>
+    <button class="green-button metrics-button" onclick="window.open('/metrics', '_blank');">Prometheus Metrics Dump
+        <button class="green-button"
+                onclick="window.open('https://addons-sso.heroku.com/apps/8aed9f88-f321-47da-bd2e-8e24833d06cc/addons/3fcb00e1-ec19-4c53-850c-0b56522390ac', '_blank');">
+            Better Time Production Monitoring
+        </button>
+        <!-- Add more buttons as needed -->
+</div>
 
 
 <!-- Display echoed file upload data -->
@@ -393,7 +407,7 @@
         </tr>
     {% endif %}
     <br>
-    <button class="back-button" onclick="window.location.href = '/';">Go Back to Mainpage</button>
+    <button class="green-button back-button" onclick="window.location.href = '/';">Go Back to Mainpage</button>
 </div>
 
 {% if selected_option != "files_input" %}
