@@ -26,12 +26,19 @@ jobs:
           pip install nltk
           python -m nltk.downloader punkt stopwords
 
-      - name: Debug
-        run: |
-          echo "Setting AWS_ACCESS_KEY_ID..."
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+      - name: Set AWS_ACCESS_KEY_ID
+        run: echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
 
-      - name: Run  tests
+      - name: Set AWS_SECRET_ACCESS_KEY
+        run: echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+
+      - name: Set AWS_REGION
+        run: echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
+
+      - name: Set DYNAMODB_TABLE_NAME
+        run: echo "DYNAMODB_TABLE_NAME=${{ secrets.DYNAMODB_TABLE_NAME }}" >> $GITHUB_ENV
+
+      - name: Run tests
         run: |
           python -m unittest src.tests.test_data_collection src.tests.integration_test_routes src.tests.unit_and_mock_test_analysis src.tests.unit_and_mock_test_database
       #          python -m unittest discover -s src/tests
