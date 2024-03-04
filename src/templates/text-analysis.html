@@ -39,24 +39,24 @@
         <p>{{ text_input }}</p>
         {# <p>{{ analysis_result }}</p> #}
 
-        <div id="analysis-results" style="display: none;">
+        <div id="analysis-results-text-input" style="display: none;">
             <div>
                 <h2>Basic Text Analysis</h2>
                 <h4 style="text-align: center;">Top 5 Common Words</h4>
-                <canvas id="myChart" width="400" height="200"></canvas>
-                <div id="basic-text-analysis-container"></div>
+                <canvas id="myChart-text-input" width="400" height="200"></canvas>
+                <div id="basic-text-analysis-container-text-input"></div>
             </div>
             <br>
             <div>
                 <h2>Sentiment Analysis</h2>
-                <div id="sentiment-analysis-container"></div>
+                <div id="sentiment-analysis-container-text-input"></div>
             </div>
             <br>
             <div>
                 <h2>NLP Analysis</h2>
                 <h4 style="text-align: center;">POS Tag Analysis</h4>
-                <canvas id="posChart" width="400" height="200"></canvas>
-                <div id="nlp-analysis-container"></div>
+                <canvas id="posChart-text-input" width="400" height="200"></canvas>
+                <div id="nlp-analysis-container-text-input"></div>
 
                 <div class="links-container">
                     <p>For more information on POS tags, you can visit:</p>
@@ -70,7 +70,7 @@
                 </div>
             </div>
         </div>
-        <p id="loading-message">Loading analysis result...</p>
+        <p id="loading-message-text-input">Loading analysis result...</p>
         {#    {% elif selected_option == "files_input" %}#}
         {#        {% for file_info in files_info %}#}
         {#            <h2>Analysis Results for {{ file_info.filename }}:</h2>#}
@@ -131,76 +131,51 @@
         {#                processFilesInputData({{ analysis_results | tojson }}, {{ file_info | tojson }}, {{ loop.index }});#}
         {#            </script>#}
         {#        {% endfor %}#}
-        {#    {% elif selected_option == "news_article_sources" %}#}
-        {#        <h2>Selected News Provider Random Article Analysis:</h2>#}
-        {#        <p>Selected Provider: {{ selected_name }}</p>#}
-        {#        <p>Provider URL: <a href="{{ selected_url }}">{{ selected_url }}</a></p>#}
-        {#        <br>#}
-        {#        <p>Selected News Article Link: <a href="{{ article_link }}">{{ article_link }}</a></p>#}
+    {% elif selected_option == "news_article_sources" %}
+        <h2>Selected News Provider Random Article Analysis:</h2>
+        <p>Selected Provider: {{ selected_name }}</p>
+        <p>Provider URL: <a href="{{ selected_url }}">{{ selected_url }}</a></p>
+        <br>
+        <p id="link-news-article" style="display: none;">Selected News Article Link: <a
+                href="{{ article_link }}">{{ article_link }}</a></p>
         {#        <p>{{ analysis_result }}</p>#}
-        {##}
-        {#        <tr>#}
-        {#            <h2>Basic Text Analysis</h2>#}
-        {#            <h4 style="text-align: center;">Top 5 Common Words</h4>#}
-        {#            <canvas id="myChart" width="400" height="200"></canvas>#}
-        {##}
-        {#            <td>#}
-        {#                <table>#}
-        {#                    {% for key, value in analysis_result.basic_text_analysis_dict.items() %}#}
-        {#                        <tr>#}
-        {#                            <td>{{ key }}</td>#}
-        {#                            <td>#}
-        {#                                {% if key == "estimated_reading_time" %}#}
-        {#                                    {{ value }} min(s)#}
-        {#                                {% else %}#}
-        {#                                    {{ value }}#}
-        {#                                {% endif %}#}
-        {#                            </td>#}
-        {#                        </tr>#}
-        {#                    {% endfor %}#}
-        {#                </table>#}
-        {#            </td>#}
-        {#        </tr>#}
-        {#        <br>#}
-        {#        <tr>#}
-        {#            <h2>Sentiment Analysis</h2>#}
-        {#            <td>#}
-        {#                <table>#}
-        {#                    {% for key, value in analysis_result.sentiment_analysis_dict.items() %}#}
-        {#                        <tr>#}
-        {#                            <td>{{ key }}</td>#}
-        {#                            <td>{{ value }}</td>#}
-        {#                        </tr>#}
-        {#                    {% endfor %}#}
-        {#                </table>#}
-        {#            </td>#}
-        {#        </tr>#}
-        {#        <br>#}
-        {#        <tr>#}
-        {#            <h2>NLP Analysis</h2>#}
-        {#            <h4 style="text-align: center;">POS Tag Analysis</h4>#}
-        {#            <canvas id="posChart" width="400" height="200"></canvas>#}
-        {##}
-        {#            <td>#}
-        {#                <table>#}
-        {#                    {% for key, value in analysis_result.nlp_analysis_dict.items() %}#}
-        {#                        <tr>#}
-        {#                            <td>{{ key }}</td>#}
-        {#                            <td>{{ value }}</td>#}
-        {#                        </tr>#}
-        {#                    {% endfor %}#}
-        {#                </table>#}
-        {#            </td>#}
-        {#            <div class="links-container">#}
-        {#                <p>For more information on POS tags, you can visit:</p>#}
-        {#                <ul>#}
-        {#                    <li><a href="https://stackoverflow.com/questions/15388831/what-are-all-possible-pos-tags-of-nltk"#}
-        {#                           target="_blank">Stack Overflow - Possible POS tags of NLTK</a></li>#}
-        {#                    <li><a href="https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html"#}
-        {#                           target="_blank">Penn Treebank POS Tags</a></li>#}
-        {#                </ul>#}
-        {#            </div>#}
-        {#        </tr>#}
+        <h2>Provided Text Input Data:</h2>
+        <p id="text-data-news-article">{{ text_input }}</p>
+        {# <p>{{ analysis_result }}</p> #}
+
+        <div id="analysis-results-news-article" style="display: none;">
+            <div>
+                <h2>Basic Text Analysis</h2>
+                <h4 style="text-align: center;">Top 5 Common Words</h4>
+                <canvas id="myChart-news-article" width="400" height="200"></canvas>
+                <div id="basic-text-analysis-container-news-article"></div>
+            </div>
+            <br>
+            <div>
+                <h2>Sentiment Analysis</h2>
+                <div id="sentiment-analysis-container-news-article"></div>
+            </div>
+            <br>
+            <div>
+                <h2>NLP Analysis</h2>
+                <h4 style="text-align: center;">POS Tag Analysis</h4>
+                <canvas id="posChart-news-article" width="400" height="200"></canvas>
+                <div id="nlp-analysis-container-news-article"></div>
+
+                <div class="links-container">
+                    <p>For more information on POS tags, you can visit:</p>
+                    <ul>
+                        <li>
+                            <a href="https://stackoverflow.com/questions/15388831/what-are-all-possible-pos-tags-of-nltk"
+                               target="_blank">Stack Overflow - Possible POS tags of NLTK</a></li>
+                        <li><a href="https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html"
+                               target="_blank">Penn Treebank POS Tags</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <p id="loading-message-news-article">Loading analysis result...</p>
+
         {#        <script>#}
         {#            processSingleInputData({{ analysis_result | tojson }});#}
         {#        </script>#}

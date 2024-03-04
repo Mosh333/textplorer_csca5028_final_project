@@ -1,17 +1,17 @@
 // render_data.js
 
-function processSingleInputData(analysisResult) {
+function processSingleInputDataTextInput(analysisResult) {
     const topNWordsData = analysisResult.basic_text_analysis_dict.top_n_words;
     const words = topNWordsData.map(item => item[0]);
     const frequencies = topNWordsData.map(item => item[1]);
 
     // Show the analysis result elements
-    document.getElementById('analysis-results').style.display = 'block';
-    document.getElementById('loading-message').remove();
+    document.getElementById('analysis-results-text-input').style.display = 'block';
+    document.getElementById('loading-message-text-input').remove();
 
     // Basic Text Analysis
     const basicTextAnalysisDict = analysisResult.basic_text_analysis_dict;
-    const basicTextAnalysisContainer = document.getElementById('basic-text-analysis-container');
+    const basicTextAnalysisContainer = document.getElementById('basic-text-analysis-container-text-input');
     basicTextAnalysisContainer.innerHTML = ''; // Clear previous content
 
     const basicTextAnalysisTable = document.createElement('table');
@@ -33,7 +33,7 @@ function processSingleInputData(analysisResult) {
 
     // Sentiment Analysis
     const sentimentAnalysisDict = analysisResult.sentiment_analysis_dict;
-    const sentimentAnalysisContainer = document.getElementById('sentiment-analysis-container');
+    const sentimentAnalysisContainer = document.getElementById('sentiment-analysis-container-text-input');
     sentimentAnalysisContainer.innerHTML = ''; // Clear previous content
 
     const sentimentAnalysisTable = document.createElement('table');
@@ -51,7 +51,7 @@ function processSingleInputData(analysisResult) {
 
     // NLP Analysis
     const nlpAnalysisDict = analysisResult.nlp_analysis_dict;
-    const nlpAnalysisContainer = document.getElementById('nlp-analysis-container');
+    const nlpAnalysisContainer = document.getElementById('nlp-analysis-container-text-input');
     nlpAnalysisContainer.innerHTML = ''; // Clear previous content
 
     const nlpAnalysisTable = document.createElement('table');
@@ -72,7 +72,7 @@ function processSingleInputData(analysisResult) {
     nlpAnalysisContainer.appendChild(nlpAnalysisTable);
 
     // Bar Graphs
-    var ctxWord = document.getElementById('myChart').getContext('2d');
+    var ctxWord = document.getElementById('myChart-text-input').getContext('2d');
     var wordChart = new Chart(ctxWord, {
         type: 'bar',
         data: {
@@ -138,7 +138,178 @@ function processSingleInputData(analysisResult) {
     const posLabels = top5PosCount.map(item => posTagNames[item[0]]);
     const posCounts = top5PosCount.map(item => item[1]);
 
-    var ctxPos = document.getElementById('posChart').getContext('2d');
+    var ctxPos = document.getElementById('posChart-text-input').getContext('2d');
+    var posChart = new Chart(ctxPos, {
+        type: 'bar',
+        data: {
+            labels: posLabels,
+            datasets: [{
+                label: 'POS Tag Count',
+                data: posCounts,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Light green
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function processSingleInputDataNewsArticle(analysisResult) {
+    const topNWordsData = analysisResult.basic_text_analysis_dict.top_n_words;
+    const words = topNWordsData.map(item => item[0]);
+    const frequencies = topNWordsData.map(item => item[1]);
+
+    // Show the analysis result elements
+    document.getElementById('analysis-results-news-article').style.display = 'block';
+    document.getElementById('loading-message-news-article').remove();
+    var linkNewsArticle = document.getElementById('link-news-article');
+    var textDataNewsArticle = document.getElementById('text-data-news-article');
+
+    // Update the above contents
+    linkNewsArticle.innerHTML = 'Selected News Article Link: <a href="' + analysisResult.article_link + '">' + analysisResult.article_link + '</a>';
+    textDataNewsArticle.textContent = analysisResult.article_text_data;
+
+    // Display elements:
+    linkNewsArticle.style.display = 'block';
+    textDataNewsArticle.style.display = 'block';
+
+    // Basic Text Analysis
+    const basicTextAnalysisDict = analysisResult.basic_text_analysis_dict;
+    const basicTextAnalysisContainer = document.getElementById('basic-text-analysis-container-news-article');
+    basicTextAnalysisContainer.innerHTML = ''; // Clear previous content
+
+    const basicTextAnalysisTable = document.createElement('table');
+    for (const [key, value] of Object.entries(basicTextAnalysisDict)) {
+        const row = document.createElement('tr');
+        const keyCell = document.createElement('td');
+        keyCell.textContent = key;
+        const valueCell = document.createElement('td');
+        if (key === 'estimated_reading_time') {
+            valueCell.textContent = `${value} min(s)`;
+        } else {
+            valueCell.textContent = value;
+        }
+        row.appendChild(keyCell);
+        row.appendChild(valueCell);
+        basicTextAnalysisTable.appendChild(row);
+    }
+    basicTextAnalysisContainer.appendChild(basicTextAnalysisTable);
+
+    // Sentiment Analysis
+    const sentimentAnalysisDict = analysisResult.sentiment_analysis_dict;
+    const sentimentAnalysisContainer = document.getElementById('sentiment-analysis-container-news-article');
+    sentimentAnalysisContainer.innerHTML = ''; // Clear previous content
+
+    const sentimentAnalysisTable = document.createElement('table');
+    for (const [key, value] of Object.entries(sentimentAnalysisDict)) {
+        const row = document.createElement('tr');
+        const keyCell = document.createElement('td');
+        keyCell.textContent = key;
+        const valueCell = document.createElement('td');
+        valueCell.textContent = value;
+        row.appendChild(keyCell);
+        row.appendChild(valueCell);
+        sentimentAnalysisTable.appendChild(row);
+    }
+    sentimentAnalysisContainer.appendChild(sentimentAnalysisTable);
+
+    // NLP Analysis
+    const nlpAnalysisDict = analysisResult.nlp_analysis_dict;
+    const nlpAnalysisContainer = document.getElementById('nlp-analysis-container-news-article');
+    nlpAnalysisContainer.innerHTML = ''; // Clear previous content
+
+    const nlpAnalysisTable = document.createElement('table');
+    for (const [key, value] of Object.entries(nlpAnalysisDict)) {
+        const row = document.createElement('tr');
+        const keyCell = document.createElement('td');
+        keyCell.textContent = key;
+        const valueCell = document.createElement('td');
+        if (typeof value === 'object') {
+            valueCell.textContent = JSON.stringify(value);
+        } else {
+            valueCell.textContent = value;
+        }
+        row.appendChild(keyCell);
+        row.appendChild(valueCell);
+        nlpAnalysisTable.appendChild(row);
+    }
+    nlpAnalysisContainer.appendChild(nlpAnalysisTable);
+
+    // Bar Graphs
+    var ctxWord = document.getElementById('myChart-news-article').getContext('2d');
+    var wordChart = new Chart(ctxWord, {
+        type: 'bar',
+        data: {
+            labels: words,
+            datasets: [{
+                label: 'Word Frequency',
+                data: frequencies,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Light green
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    const posCountData = analysisResult.nlp_analysis_dict.pos_count;
+    const posTagNames = {
+        'NN': 'Noun',
+        'DT': 'Determiner',
+        'NNP': 'Proper Noun',
+        'IN': 'Preposition or Subordinating Conjunction',
+        'NNS': 'Plural Noun',
+        'JJ': 'Adjective',
+        ',': 'Comma',
+        'PRP': 'Personal Pronoun',
+        'RB': 'Adverb',
+        'VB': 'Verb (base form)',
+        'VBD': 'Verb (past tense)',
+        'TO': 'to',
+        'VBP': 'Verb (non-3rd person singular present)',
+        '.': 'Period',
+        'VBG': 'Verb (gerund or present participle)',
+        'VBZ': 'Verb (3rd person singular present)',
+        'CC': 'Coordinating Conjunction',
+        "''": 'Closing quotation mark',
+        '``': 'Opening quotation mark',
+        'PRP$': 'Possessive Pronoun',
+        'CD': 'Cardinal Number',
+        'VBN': 'Verb (past participle)',
+        'WDT': 'Wh-Determiner',
+        'MD': 'Modal',
+        'RP': 'Particle',
+        '$': 'Dollar Sign',
+        'WRB': 'Wh-Adverb',
+        'POS': 'Possessive Ending',
+        'WP': 'Wh-Pronoun',
+        'JJS': 'Adjective (superlative)',
+        ':': 'Colon',
+        'JJR': 'Adjective (comparative)',
+        'RBR': 'Adverb (comparative)'
+    };
+
+    const top5PosCount = Object.entries(posCountData)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+
+    const posLabels = top5PosCount.map(item => posTagNames[item[0]]);
+    const posCounts = top5PosCount.map(item => item[1]);
+
+    var ctxPos = document.getElementById('posChart-news-article').getContext('2d');
     var posChart = new Chart(ctxPos, {
         type: 'bar',
         data: {
@@ -295,11 +466,15 @@ function pollForResult(selected_option, requestid) {
                     if (selected_option === "text_input") {
                         console.log('Did we get here?')
                         console.log(data)
-                        processSingleInputData(data.analysis_result);
+                        processSingleInputDataTextInput(data.analysis_result);
                     } else if (selected_option === "files_input") {
+                        console.log('Did we get here?')
+                        console.log(data)
                         processFilesInputData(data.analysis_results, data.file_info, data.loop_index);
                     } else if (selected_option === "news_article_sources") {
-                        processSingleInputData(result.analysis_result);
+                        console.log('Did we get here?')
+                        console.log(data)
+                        processSingleInputDataNewsArticle(data.analysis_result);
                     } else {
                         console.log("Error: Unsupported selected option.");
                     }

@@ -26,7 +26,8 @@ table {
     margin: 20px auto; /* Center the table on the page */
 }
 
-#nlp-analysis-container {
+/*Wildcard to apply style if starts with nlp-analysis-container*/
+[id^="nlp-analysis-container"] {
     width: 50%;
     max-width: 50%;
     overflow: auto;

@@ -38,7 +38,7 @@ def setup_routes(app):
             # return render_template("text-analysis.html", selected_option=selected_option, text_input=text_input,
             #                        analysis_result=analysis_result, requestid=str(requestid))
 
-            # offload the computation heavy workload to rabbitmq's producer end
+            # offload the computation heavy workload to rabbitmq's producer side
             send_message_to_queue(selected_option, text_input, requestid)
 
             # consumer end will be invoked in the following route:
@@ -89,30 +89,35 @@ def setup_routes(app):
             selected_name = selected_option_data["name"]
             selected_url = selected_option_data["url"]
             requestid = uuid.uuid4()
+
+            # offload the computation heavy workload to rabbitmq's producer side
+            send_message_to_queue(selected_option, news_article_sources_value, requestid)
+
             # print(news_article_sources_value)
-            try:
-                if selected_name == "CTV News":
-                    article_text_data, article_link = fetch_random_ctv_news_article_paragraphs()
-                elif selected_name == "ABC News":
-                    article_text_data, article_link = fetch_random_abcnews_post_article_paragraphs()
-                elif selected_name == "Al Jazeera":
-                    article_text_data, article_link = fetch_random_aljazeeera_post_article_paragraphs()
-                else:
-                    return "Invalid news outlet source selected"
+            # try:
+            #     if selected_name == "CTV News":
+            #         article_text_data, article_link = fetch_random_ctv_news_article_paragraphs()
+            #     elif selected_name == "ABC News":
+            #         article_text_data, article_link = fetch_random_abcnews_post_article_paragraphs()
+            #     elif selected_name == "Al Jazeera":
+            #         article_text_data, article_link = fetch_random_aljazeeera_post_article_paragraphs()
+            #     else:
+            #         return "Invalid news outlet source selected"
+            #
+            #     analysis_result = compute_full_analysis(article_text_data)
+            #     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            #
+            #     insert_analysis_results({"selected_name": selected_name, "selected_url": selected_url,
+            #                              "article_text_data": article_text_data, "analysis_result": analysis_result,
+            #                              "timestamp": timestamp}, requestid)
 
-                analysis_result = compute_full_analysis(article_text_data)
-                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-                insert_analysis_results({"selected_name": selected_name, "selected_url": selected_url,
-                                         "article_text_data": article_text_data, "analysis_result": analysis_result,
-                                         "timestamp": timestamp}, requestid)
-
-                return render_template("text-analysis.html", selected_option=selected_option,
-                                       selected_name=selected_name,
-                                       selected_url=selected_url, analysis_result=analysis_result,
-                                       article_link=article_link)
-            except Exception as e:
-                return f"An error occurred with the fetch news article method: {str(e)}"
+            return render_template("text-analysis.html", selected_option=selected_option,
+                                   selected_name=selected_name,
+                                   selected_url=selected_url,
+                                   requestid=str(
+                                       requestid))  # , analysis_result=analysis_result, article_link=article_link
+            # except Exception as e:
+            #     return f"An error occurred with the fetch news article method: {str(e)}"
         else:
             # Handle other options (if any)
             return "Invalid option selected"
@@ -128,9 +133,9 @@ def setup_routes(app):
             print("from perform_offloaded_computation(), what is selected_option?: ", selected_option)
             print("from perform_offloaded_computation(), what is requestid?: ", requestid)
 
-            analysis_result = receive_message_from_queue(selected_option, requestid)
-            print("from perform_offloaded_computation(), what is analysis_result?: ", analysis_result)
             if selected_option == "text_input":
+                analysis_result = receive_message_from_queue(selected_option, requestid)
+                print("from perform_offloaded_computation(), what is analysis_result?: ", analysis_result)
                 if analysis_result is None:
                     print("here1")
                     return jsonify({"status": "in_progress"})
@@ -139,10 +144,23 @@ def setup_routes(app):
                     return jsonify({"status": "complete", "analysis_result": analysis_result})
             elif selected_option == "files_input":
                 print("Received files_input in perform_offloaded_computation")
-                # Add your handling for files_input here
+                analysis_results = receive_message_from_queue(selected_option, requestid)
+                print("from perform_offloaded_computation(), what is analysis_results?: ", analysis_results)
+                if analysis_results is None:
+                    print("here1")
+                    return jsonify({"status": "in_progress"})
+                else:
+                    print("here2")
+                    return jsonify({"status": "complete", "analysis_result": analysis_results})
             elif selected_option == "news_article_sources":
-                print("Received news_article_sources in perform_offloaded_computation")
-                # Add your handling for news_article_sources here
+                analysis_result = receive_message_from_queue(selected_option, requestid)
+                print("from perform_offloaded_computation(), what is analysis_result?: ", analysis_result)
+                if analysis_result is None:
+                    print("here1")
+                    return jsonify({"status": "in_progress"})
+                else:
+                    print("here2")
+                    return jsonify({"status": "complete", "analysis_result": analysis_result})
             else:
                 return jsonify({"error": "Unsupported selected option"}), 400
         except Exception as e:

@@ -41,19 +41,51 @@ def process_message(message_data):
                 {"text_input": text_for_analysis, "analysis_result": analysis_result, "timestamp": timestamp},
                 requestid)
 
-            print('We are definitely returning the follow: ', analysis_result)
+            print('We are definitely returning the following: ', analysis_result)
             return analysis_result
         except Exception as e:
             logger.error("Error processing message: %s", e)
             return None
     elif selected_option == "files_input":
+        # Print the extracted data
         print("Selected Option:", selected_option)
         print("Request ID:", requestid)
         print("Text for Analysis:", text_for_analysis)
     elif selected_option == "news_article_sources":
+        # Print the extracted data
         print("Selected Option:", selected_option)
         print("Request ID:", requestid)
-        print("Text for Analysis:", text_for_analysis)
+        news_article_sources_value = text_for_analysis
+        print("News Article Source to grab text:", news_article_sources_value)
+        # Parse the JSON-like string to extract the name and URL
+        selected_option_data = json.loads(news_article_sources_value)
+        selected_name = selected_option_data["name"]
+        selected_url = selected_option_data["url"]
+        try:
+            if selected_name == "CTV News":
+                article_text_data, article_link = fetch_random_ctv_news_article_paragraphs()
+            elif selected_name == "ABC News":
+                article_text_data, article_link = fetch_random_abcnews_post_article_paragraphs()
+            elif selected_name == "Al Jazeera":
+                article_text_data, article_link = fetch_random_aljazeeera_post_article_paragraphs()
+            else:
+                return "Invalid news outlet source selected"
+
+            analysis_result = compute_full_analysis(article_text_data)
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+            insert_analysis_results({"selected_name": selected_name, "selected_url": selected_url,
+                                     "article_text_data": article_text_data, "analysis_result": analysis_result,
+                                     "timestamp": timestamp}, requestid)
+            analysis_result["selected_name"] = selected_name
+            analysis_result["selected_url"] = selected_url
+            analysis_result["article_text_data"] = article_text_data
+            analysis_result["article_link"] = article_link
+            print('We are definitely returning the following: ', analysis_result)
+            return analysis_result
+        except Exception as e:
+            logger.error("Error processing message: %s", e)
+            return None
     else:
         # Handle other options (if any)
         logger.error("Invalid option selected: %s", selected_option)
