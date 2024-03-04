@@ -29,9 +29,9 @@ table = dynamodb.Table(dynamodb_table)
 
 
 # Function to insert text analysis results into the DynamoDB table
-def insert_analysis_results(analysis_results: dict):
-    # use the standard uuid method to generate unique
-    requestid = str(uuid.uuid4())
+def insert_analysis_results(analysis_results: dict, input_requestid: uuid.UUID):
+    # the key must be 'requestid' since our dynamodb partition key is set "requestid (String)"
+    requestid = str(input_requestid)
     analysis_results['requestid'] = requestid
     for key, value in analysis_results.items():
         if isinstance(value, float):

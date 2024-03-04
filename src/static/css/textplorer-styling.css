@@ -1,0 +1,81 @@
+/* Style for the back button */
+.green-button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 10px; /* Add margin between buttons */
+}
+
+/* Hover effect for the button */
+.custom-button:hover {
+    background-color: #45a049; /* Darker Green */
+}
+
+/* Styling for the tables */
+table {
+    width: 50%; /* Page width */
+    border-collapse: collapse;
+    margin: 20px auto; /* Center the table on the page */
+}
+
+#nlp-analysis-container {
+    width: 50%;
+    max-width: 50%;
+    overflow: auto;
+    white-space: normal;
+    word-wrap: break-word;
+    margin: 0 auto; /* Center the container horizontally */
+}
+
+/* Styling for table headers */
+th {
+    background-color: #4CAF50; /* Light green */
+    color: white;
+    font-weight: bold;
+}
+
+/* Styling for alternating table rows */
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Lighter green */
+}
+
+/* Styling for nested tables */
+table table {
+    width: 50%;
+    border-collapse: collapse;
+    border: none;
+}
+
+/* Styling for nested table cells */
+table table td {
+    padding: 8px;
+    border: none;
+}
+
+/* Styling for the canvas */
+canvas {
+    display: block;
+    margin: 0 auto; /* Center the chart */
+    width: 50%; /* Take up half of the width */
+}
+
+/* Centering the section */
+.links-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Adjust margin as needed */
+}
+
+/* Styling for the links */
+.links-container a {
+    margin: 0 10px; /* Adjust margin between links as needed */
+}

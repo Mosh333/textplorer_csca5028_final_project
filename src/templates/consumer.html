@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Consumer</title>
+</head>
+<body>
+<h1>Analysis Result</h1>
+{% if selected_option == "text_input" %}
+    <pre>{{ analysis_result | safe }}</pre>
+{% elif selected_option == "files_input" %}
+    <pre>{{ analysis_results | safe }}</pre>
+{% elif selected_option == "news_article_sources" %}
+    <pre>{{ analysis_result | safe }}</pre>
+{% endif %}
+</body>
+</html>

@@ -5,81 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Textplorer Analysis</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        /* Style for the back button */
-        .green-button {
-            background-color: #4CAF50; /* Green */
-            border: none;
-            color: white;
-            padding: 15px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-right: 10px; /* Add margin between buttons */
-        }
-
-        /* Hover effect for the button */
-        .custom-button:hover {
-            background-color: #45a049; /* Darker Green */
-        }
-
-        /* Styling for the tables */
-        table {
-            width: 50%; /* Page width */
-            border-collapse: collapse;
-            margin: 20px auto; /* Center the table on the page */
-        }
-
-        /* Styling for table headers */
-        th {
-            background-color: #4CAF50; /* Light green */
-            color: white;
-            font-weight: bold;
-        }
-
-        /* Styling for alternating table rows */
-        tr:nth-child(even) {
-            background-color: #f2f2f2; /* Lighter green */
-        }
-
-        /* Styling for nested tables */
-        table table {
-            width: 100%;
-            border-collapse: collapse;
-            border: none;
-        }
-
-        /* Styling for nested table cells */
-        table table td {
-            padding: 8px;
-            border: none;
-        }
-
-        /* Styling for the canvas */
-        canvas {
-            display: block;
-            margin: 0 auto; /* Center the chart */
-            width: 50%; /* Take up half of the width */
-        }
-    </style>
-    <style>
-        /* Centering the section */
-        .links-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px; /* Adjust margin as needed */
-        }
-
-        /* Styling for the links */
-        .links-container a {
-            margin: 0 10px; /* Adjust margin between links as needed */
-        }
-    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="../static/js/render_data.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/textplorer-styling.css">
 </head>
 <body>
 <h1>Texplorer</h1>
@@ -92,11 +21,11 @@
         Monitoring (must be running locally)
     </button>
     <button class="green-button metrics-button" onclick="window.open('/metrics', '_blank');">Prometheus Metrics Dump
-        <button class="green-button"
-                onclick="window.open('https://addons-sso.heroku.com/apps/8aed9f88-f321-47da-bd2e-8e24833d06cc/addons/3fcb00e1-ec19-4c53-850c-0b56522390ac', '_blank');">
-            Better Time Production Monitoring
-        </button>
-        <!-- Add more buttons as needed -->
+    </button>
+    <button class="green-button"
+            onclick="window.open('https://addons-sso.heroku.com/apps/8aed9f88-f321-47da-bd2e-8e24833d06cc/addons/3fcb00e1-ec19-4c53-850c-0b56522390ac', '_blank');">
+        Better Time Production Monitoring
+    </button>
 </div>
 
 
@@ -108,416 +37,189 @@
     {% if selected_option == "text_input" %}
         <h2>Provided Text Input Data:</h2>
         <p>{{ text_input }}</p>
-        {#        <p>{{ analysis_result }}</p>#}
+        {# <p>{{ analysis_result }}</p> #}
 
-        <tr>
-            <h2>Basic Text Analysis</h2>
-            <h4 style="text-align: center;">Top 5 Common Words</h4>
-            <canvas id="myChart" width="400" height="200"></canvas>
-
-            <td>
-                <table>
-                    {% for key, value in analysis_result.basic_text_analysis_dict.items() %}
-                        <tr>
-                            <td>{{ key }}</td>
-                            <td>
-                                {% if key == "estimated_reading_time" %}
-                                    {{ value }} min(s)
-                                {% else %}
-                                    {{ value }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </td>
-        </tr>
-        <br>
-        <tr>
-            <h2>Sentiment Analysis</h2>
-            <td>
-                <table>
-                    {% for key, value in analysis_result.sentiment_analysis_dict.items() %}
-                        <tr>
-                            <td>{{ key }}</td>
-                            <td>{{ value }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </td>
-        </tr>
-        <br>
-        <tr>
-            <h2>NLP Analysis</h2>
-            <h4 style="text-align: center;">POS Tag Analysis</h4>
-            <canvas id="posChart" width="400" height="200"></canvas>
-
-            <td>
-                <table>
-                    {% for key, value in analysis_result.nlp_analysis_dict.items() %}
-                        <tr>
-                            <td>{{ key }}</td>
-                            <td>{{ value }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </td>
-            <div class="links-container">
-                <p>For more information on POS tags, you can visit:</p>
-                <ul>
-                    <li><a href="https://stackoverflow.com/questions/15388831/what-are-all-possible-pos-tags-of-nltk"
-                           target="_blank">Stack Overflow - Possible POS tags of NLTK</a></li>
-                    <li><a href="https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html"
-                           target="_blank">Penn Treebank POS Tags</a></li>
-                </ul>
+        <div id="analysis-results" style="display: none;">
+            <div>
+                <h2>Basic Text Analysis</h2>
+                <h4 style="text-align: center;">Top 5 Common Words</h4>
+                <canvas id="myChart" width="400" height="200"></canvas>
+                <div id="basic-text-analysis-container"></div>
             </div>
-        </tr>
-    {% elif selected_option == "files_input" %}
-        {% for file_info in files_info %}
-            <h2>Analysis Results for {{ file_info.filename }}:</h2>
-            <p>{{ file_info.text_content }}</p>
-            <h3>Basic Text Analysis:</h3>
-            <h4 style="text-align: center;">Top 5 Common Words</h4>
-            <canvas id="wordChart_{{ loop.index }}" width="400" height="200"></canvas>
-            <table>
-                {% for key, value in analysis_results[file_info.filename]['basic_text_analysis_dict'].items() %}
-                    <tr>
-                        <td>{{ key }}</td>
-                        <td>
-                            {% if key == "estimated_reading_time" %}
-                                {{ value }} min(s)
-                            {% else %}
-                                {{ value }}
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
             <br>
-            <h3>Sentiment Analysis:</h3>
-            <table>
-                {% for key, value in analysis_results[file_info.filename]['sentiment_analysis_dict'].items() %}
-                    <tr>
-                        <td>{{ key }}</td>
-                        <td>{{ value }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
+            <div>
+                <h2>Sentiment Analysis</h2>
+                <div id="sentiment-analysis-container"></div>
+            </div>
             <br>
-            <h3>NLP Analysis:</h3>
-            <h4 style="text-align: center;">POS Tag Analysis</h4>
-            <canvas id="posChart_{{ loop.index }}" width="400" height="200"></canvas>
-            <table>
-                {% for key, value in analysis_results[file_info.filename]['nlp_analysis_dict'].items() %}
-                    <tr>
-                        <td>{{ key }}</td>
-                        <td>{{ value }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-            <div class="links-container">
-                <p>For more information on POS tags, you can visit:</p>
-                <ul>
-                    <li><a href="https://stackoverflow.com/questions/15388831/what-are-all-possible-pos-tags-of-nltk"
-                           target="_blank">Stack Overflow - Possible POS tags of NLTK</a></li>
-                    <li><a href="https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html"
-                           target="_blank">Penn Treebank POS Tags</a></li>
-                </ul>
+            <div>
+                <h2>NLP Analysis</h2>
+                <h4 style="text-align: center;">POS Tag Analysis</h4>
+                <canvas id="posChart" width="400" height="200"></canvas>
+                <div id="nlp-analysis-container"></div>
+
+                <div class="links-container">
+                    <p>For more information on POS tags, you can visit:</p>
+                    <ul>
+                        <li>
+                            <a href="https://stackoverflow.com/questions/15388831/what-are-all-possible-pos-tags-of-nltk"
+                               target="_blank">Stack Overflow - Possible POS tags of NLTK</a></li>
+                        <li><a href="https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html"
+                               target="_blank">Penn Treebank POS Tags</a></li>
+                    </ul>
+                </div>
             </div>
-            <hr>
-            <script>
-                // Extracting data from Python dictionary for top 5 words
-                const top5WordsData_{{ loop.index }} = {{ analysis_results[file_info.filename]['basic_text_analysis_dict'].top_n_words | tojson }};
-
-                // Extracting words and frequencies
-                const words_{{ loop.index }} = top5WordsData_{{ loop.index }}.map(item => item[0]);
-                const frequencies_{{ loop.index }} = top5WordsData_{{ loop.index }}.map(item => item[1]);
-
-                // Creating a new Chart instance for top 5 words
-                var ctx_word_{{ loop.index }} = document.getElementById('wordChart_{{ loop.index }}').getContext('2d');
-                var wordChart_{{ loop.index }} = new Chart(ctx_word_{{ loop.index }}, {
-                    type: 'bar',
-                    data: {
-                        labels: words_{{ loop.index }},
-                        datasets: [{
-                            label: 'Word Frequency',
-                            data: frequencies_{{ loop.index }},
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Light green
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-
-                // Extracting data from Python dictionary for POS tag analysis
-                const posCountData_{{ loop.index }} = {{ analysis_results[file_info.filename]['nlp_analysis_dict'].pos_count | tojson }};
-
-                // Define a mapping of POS tags to their full names
-                const posTagNames_{{ loop.index }} = {
-                    'NN': 'Noun',
-                    'DT': 'Determiner',
-                    'NNP': 'Proper Noun',
-                    'IN': 'Preposition or Subordinating Conjunction',
-                    'NNS': 'Plural Noun',
-                    'JJ': 'Adjective',
-                    ',': 'Comma',
-                    'PRP': 'Personal Pronoun',
-                    'RB': 'Adverb',
-                    'VB': 'Verb (base form)',
-                    'VBD': 'Verb (past tense)',
-                    'TO': 'to',
-                    'VBP': 'Verb (non-3rd person singular present)',
-                    '.': 'Period',
-                    'VBG': 'Verb (gerund or present participle)',
-                    'VBZ': 'Verb (3rd person singular present)',
-                    'CC': 'Coordinating Conjunction',
-                    "''": 'Closing quotation mark',
-                    '``': 'Opening quotation mark',
-                    'PRP$': 'Possessive Pronoun',
-                    'CD': 'Cardinal Number',
-                    'VBN': 'Verb (past participle)',
-                    'WDT': 'Wh-Determiner',
-                    'MD': 'Modal',
-                    'RP': 'Particle',
-                    '$': 'Dollar Sign',
-                    'WRB': 'Wh-Adverb',
-                    'POS': 'Possessive Ending',
-                    'WP': 'Wh-Pronoun',
-                    'JJS': 'Adjective (superlative)',
-                    ':': 'Colon',
-                    'JJR': 'Adjective (comparative)',
-                    'RBR': 'Adverb (comparative)'
-                };
-
-                // Extracting top 5 POS tags and their counts
-                const top5PosCount_{{ loop.index }} = Object.entries(posCountData_{{ loop.index }})
-                    .sort((a, b) => b[1] - a[1]) // Sort by count in descending order
-                    .slice(0, 5); // Get the top 5 entries
-
-                // Extracting labels (POS names) and data (counts) for the chart
-                const posLabels_{{ loop.index }} = top5PosCount_{{ loop.index }}.map(item => posTagNames_{{ loop.index }}[item[0]]);
-                const posCounts_{{ loop.index }} = top5PosCount_{{ loop.index }}.map(item => item[1]);
-
-                // Creating a new Chart instance for POS tag analysis
-                var ctx_pos_{{ loop.index }} = document.getElementById('posChart_{{ loop.index }}').getContext('2d');
-                var posChart_{{ loop.index }} = new Chart(ctx_pos_{{ loop.index }}, {
-                    type: 'bar',
-                    data: {
-                        labels: posLabels_{{ loop.index }},
-                        datasets: [{
-                            label: 'POS Tag Count',
-                            data: posCounts_{{ loop.index }},
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Light green
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-
-                console.log("posCountData:", {{ analysis_results[file_info.filename]['nlp_analysis_dict'].pos_count | tojson }});
-                // Debugging output for POS tag data
-                console.log("posLabels_{{ loop.index }}:", posLabels_{{ loop.index }});
-                console.log("posCounts_{{ loop.index }}:", posCounts_{{ loop.index }});
-
-            </script>
-        {% endfor %}
-    {% elif selected_option == "news_article_sources" %}
-        <h2>Selected News Provider Random Article Analysis:</h2>
-        <p>Selected Provider: {{ selected_name }}</p>
-        <p>Provider URL: <a href="{{ selected_url }}">{{ selected_url }}</a></p>
-        <br>
-        <p>Selected News Article Link: <a href="{{ article_link }}">{{ article_link }}</a></p>
+        </div>
+        <p id="loading-message">Loading analysis result...</p>
+        {#    {% elif selected_option == "files_input" %}#}
+        {#        {% for file_info in files_info %}#}
+        {#            <h2>Analysis Results for {{ file_info.filename }}:</h2>#}
+        {#            <p>{{ file_info.text_content }}</p>#}
+        {#            <h3>Basic Text Analysis:</h3>#}
+        {#            <h4 style="text-align: center;">Top 5 Common Words</h4>#}
+        {#            <canvas id="wordChart_{{ loop.index }}" width="400" height="200"></canvas>#}
+        {#            <table>#}
+        {#                {% for key, value in analysis_results[file_info.filename]['basic_text_analysis_dict'].items() %}#}
+        {#                    <tr>#}
+        {#                        <td>{{ key }}</td>#}
+        {#                        <td>#}
+        {#                            {% if key == "estimated_reading_time" %}#}
+        {#                                {{ value }} min(s)#}
+        {#                            {% else %}#}
+        {#                                {{ value }}#}
+        {#                            {% endif %}#}
+        {#                        </td>#}
+        {#                    </tr>#}
+        {#                {% endfor %}#}
+        {#            </table>#}
+        {#            <br>#}
+        {#            <h3>Sentiment Analysis:</h3>#}
+        {#            <table>#}
+        {#                {% for key, value in analysis_results[file_info.filename]['sentiment_analysis_dict'].items() %}#}
+        {#                    <tr>#}
+        {#                        <td>{{ key }}</td>#}
+        {#                        <td>{{ value }}</td>#}
+        {#                    </tr>#}
+        {#                {% endfor %}#}
+        {#            </table>#}
+        {#            <br>#}
+        {#            <h3>NLP Analysis:</h3>#}
+        {#            <h4 style="text-align: center;">POS Tag Analysis</h4>#}
+        {#            <canvas id="posChart_{{ loop.index }}" width="400" height="200"></canvas>#}
+        {#            <table>#}
+        {#                {% for key, value in analysis_results[file_info.filename]['nlp_analysis_dict'].items() %}#}
+        {#                    <tr>#}
+        {#                        <td>{{ key }}</td>#}
+        {#                        <td>{{ value }}</td>#}
+        {#                    </tr>#}
+        {#                {% endfor %}#}
+        {#            </table>#}
+        {#            <div class="links-container">#}
+        {#                <p>For more information on POS tags, you can visit:</p>#}
+        {#                <ul>#}
+        {#                    <li>#}
+        {#                        <a href="https://stackoverflow.com/questions/15388831/what-are-all-possible-pos-tags-of-nltk"#}
+        {#                           target="_blank">Stack Overflow - Possible POS tags of NLTK</a></li>#}
+        {#                    <li><a href="https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html"#}
+        {#                           target="_blank">Penn Treebank POS Tags</a></li>#}
+        {#                </ul>#}
+        {#            </div>#}
+        {#            <hr>#}
+        {#            <script>#}
+        {#                // Convert the analysis_results object into JSON, to prevent escape and preventing XSS attacks#}
+        {#processFilesInputData({{ analysis_results | tojson }});#}
+        {#                processFilesInputData({{ analysis_results | tojson }}, {{ file_info | tojson }}, {{ loop.index }});#}
+        {#            </script>#}
+        {#        {% endfor %}#}
+        {#    {% elif selected_option == "news_article_sources" %}#}
+        {#        <h2>Selected News Provider Random Article Analysis:</h2>#}
+        {#        <p>Selected Provider: {{ selected_name }}</p>#}
+        {#        <p>Provider URL: <a href="{{ selected_url }}">{{ selected_url }}</a></p>#}
+        {#        <br>#}
+        {#        <p>Selected News Article Link: <a href="{{ article_link }}">{{ article_link }}</a></p>#}
         {#        <p>{{ analysis_result }}</p>#}
-
-        <tr>
-            <h2>Basic Text Analysis</h2>
-            <h4 style="text-align: center;">Top 5 Common Words</h4>
-            <canvas id="myChart" width="400" height="200"></canvas>
-
-            <td>
-                <table>
-                    {% for key, value in analysis_result.basic_text_analysis_dict.items() %}
-                        <tr>
-                            <td>{{ key }}</td>
-                            <td>
-                                {% if key == "estimated_reading_time" %}
-                                    {{ value }} min(s)
-                                {% else %}
-                                    {{ value }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </td>
-        </tr>
-        <br>
-        <tr>
-            <h2>Sentiment Analysis</h2>
-            <td>
-                <table>
-                    {% for key, value in analysis_result.sentiment_analysis_dict.items() %}
-                        <tr>
-                            <td>{{ key }}</td>
-                            <td>{{ value }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </td>
-        </tr>
-        <br>
-        <tr>
-            <h2>NLP Analysis</h2>
-            <h4 style="text-align: center;">POS Tag Analysis</h4>
-            <canvas id="posChart" width="400" height="200"></canvas>
-
-            <td>
-                <table>
-                    {% for key, value in analysis_result.nlp_analysis_dict.items() %}
-                        <tr>
-                            <td>{{ key }}</td>
-                            <td>{{ value }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </td>
-            <div class="links-container">
-                <p>For more information on POS tags, you can visit:</p>
-                <ul>
-                    <li><a href="https://stackoverflow.com/questions/15388831/what-are-all-possible-pos-tags-of-nltk"
-                           target="_blank">Stack Overflow - Possible POS tags of NLTK</a></li>
-                    <li><a href="https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html"
-                           target="_blank">Penn Treebank POS Tags</a></li>
-                </ul>
-            </div>
-        </tr>
+        {##}
+        {#        <tr>#}
+        {#            <h2>Basic Text Analysis</h2>#}
+        {#            <h4 style="text-align: center;">Top 5 Common Words</h4>#}
+        {#            <canvas id="myChart" width="400" height="200"></canvas>#}
+        {##}
+        {#            <td>#}
+        {#                <table>#}
+        {#                    {% for key, value in analysis_result.basic_text_analysis_dict.items() %}#}
+        {#                        <tr>#}
+        {#                            <td>{{ key }}</td>#}
+        {#                            <td>#}
+        {#                                {% if key == "estimated_reading_time" %}#}
+        {#                                    {{ value }} min(s)#}
+        {#                                {% else %}#}
+        {#                                    {{ value }}#}
+        {#                                {% endif %}#}
+        {#                            </td>#}
+        {#                        </tr>#}
+        {#                    {% endfor %}#}
+        {#                </table>#}
+        {#            </td>#}
+        {#        </tr>#}
+        {#        <br>#}
+        {#        <tr>#}
+        {#            <h2>Sentiment Analysis</h2>#}
+        {#            <td>#}
+        {#                <table>#}
+        {#                    {% for key, value in analysis_result.sentiment_analysis_dict.items() %}#}
+        {#                        <tr>#}
+        {#                            <td>{{ key }}</td>#}
+        {#                            <td>{{ value }}</td>#}
+        {#                        </tr>#}
+        {#                    {% endfor %}#}
+        {#                </table>#}
+        {#            </td>#}
+        {#        </tr>#}
+        {#        <br>#}
+        {#        <tr>#}
+        {#            <h2>NLP Analysis</h2>#}
+        {#            <h4 style="text-align: center;">POS Tag Analysis</h4>#}
+        {#            <canvas id="posChart" width="400" height="200"></canvas>#}
+        {##}
+        {#            <td>#}
+        {#                <table>#}
+        {#                    {% for key, value in analysis_result.nlp_analysis_dict.items() %}#}
+        {#                        <tr>#}
+        {#                            <td>{{ key }}</td>#}
+        {#                            <td>{{ value }}</td>#}
+        {#                        </tr>#}
+        {#                    {% endfor %}#}
+        {#                </table>#}
+        {#            </td>#}
+        {#            <div class="links-container">#}
+        {#                <p>For more information on POS tags, you can visit:</p>#}
+        {#                <ul>#}
+        {#                    <li><a href="https://stackoverflow.com/questions/15388831/what-are-all-possible-pos-tags-of-nltk"#}
+        {#                           target="_blank">Stack Overflow - Possible POS tags of NLTK</a></li>#}
+        {#                    <li><a href="https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html"#}
+        {#                           target="_blank">Penn Treebank POS Tags</a></li>#}
+        {#                </ul>#}
+        {#            </div>#}
+        {#        </tr>#}
+        {#        <script>#}
+        {#            processSingleInputData({{ analysis_result | tojson }});#}
+        {#        </script>#}
     {% endif %}
     <br>
     <button class="green-button back-button" onclick="window.location.href = '/';">Go Back to Mainpage</button>
 </div>
 
-{% if selected_option != "files_input" %}
-    <script>
-        // Extracting data from Python dictionary
-        const topNWordsData = {{ analysis_result.basic_text_analysis_dict.top_n_words | tojson }};
+{#{% if selected_option != "files_input" %}#}
+{#    <script>#}
+{#        processSingleInputData({{ analysis_result | tojson }});#}
+{#    </script>#}
+{#{% endif %}#}
 
-        // Extracting words and frequencies
-        const words = topNWordsData.map(item => item[0]);
-        const frequencies = topNWordsData.map(item => item[1]);
-
-        // Creating a new Chart instance
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: words,
-                datasets: [{
-                    label: 'Word Frequency',
-                    data: frequencies,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Light green
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-    <script>
-        // Extracting data from Python dictionary
-        const posCountData = {{ analysis_result.nlp_analysis_dict.pos_count | tojson }};
-
-        // Define a mapping of POS tags to their full names
-        // https://stackoverflow.com/questions/15388831/what-are-all-possible-pos-tags-of-nltk
-        // https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
-        const posTagNames = {
-            'NN': 'Noun',
-            'DT': 'Determiner',
-            'NNP': 'Proper Noun',
-            'IN': 'Preposition or Subordinating Conjunction',
-            'NNS': 'Plural Noun',
-            'JJ': 'Adjective',
-            ',': 'Comma',
-            'PRP': 'Personal Pronoun',
-            'RB': 'Adverb',
-            'VB': 'Verb (base form)',
-            'VBD': 'Verb (past tense)',
-            'TO': 'to',
-            'VBP': 'Verb (non-3rd person singular present)',
-            '.': 'Period',
-            'VBG': 'Verb (gerund or present participle)',
-            'VBZ': 'Verb (3rd person singular present)',
-            'CC': 'Coordinating Conjunction',
-            "''": 'Closing quotation mark',
-            '``': 'Opening quotation mark',
-            'PRP$': 'Possessive Pronoun',
-            'CD': 'Cardinal Number',
-            'VBN': 'Verb (past participle)',
-            'WDT': 'Wh-Determiner',
-            'MD': 'Modal',
-            'RP': 'Particle',
-            '$': 'Dollar Sign',
-            'WRB': 'Wh-Adverb',
-            'POS': 'Possessive Ending',
-            'WP': 'Wh-Pronoun',
-            'JJS': 'Adjective (superlative)',
-            ':': 'Colon',
-            'JJR': 'Adjective (comparative)',
-            'RBR': 'Adverb (comparative)'
-        };
-
-        // Extracting top 5 POS tags and their counts
-        const top5PosCount = Object.entries(posCountData)
-            .sort((a, b) => b[1] - a[1]) // Sort by count in descending order
-            .slice(0, 5); // Get the top 5 entries
-
-        // Extracting labels (POS names) and data (counts) for the chart
-        const posLabels = top5PosCount.map(item => posTagNames[item[0]]);
-        const posCounts = top5PosCount.map(item => item[1]);
-
-        // Creating a new Chart instance
-        var ctx = document.getElementById('posChart').getContext('2d');
-        var posChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: posLabels,
-                datasets: [{
-                    label: 'POS Tag Count',
-                    data: posCounts,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Light green
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-{% endif %}
+<script>
+    console.log("Selected Option:", "{{ selected_option }}");
+    console.log("Request ID:", "{{ requestid }}");
+    pollForResult("{{ selected_option }}", "{{ requestid }}");
+</script>
 
 </body>
 </html>
