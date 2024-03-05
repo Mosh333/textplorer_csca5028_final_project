@@ -71,66 +71,10 @@
             </div>
         </div>
         <p id="loading-message-text-input">Loading analysis result...</p>
-        {#    {% elif selected_option == "files_input" %}#}
-        {#        {% for file_info in files_info %}#}
-        {#            <h2>Analysis Results for {{ file_info.filename }}:</h2>#}
-        {#            <p>{{ file_info.text_content }}</p>#}
-        {#            <h3>Basic Text Analysis:</h3>#}
-        {#            <h4 style="text-align: center;">Top 5 Common Words</h4>#}
-        {#            <canvas id="wordChart_{{ loop.index }}" width="400" height="200"></canvas>#}
-        {#            <table>#}
-        {#                {% for key, value in analysis_results[file_info.filename]['basic_text_analysis_dict'].items() %}#}
-        {#                    <tr>#}
-        {#                        <td>{{ key }}</td>#}
-        {#                        <td>#}
-        {#                            {% if key == "estimated_reading_time" %}#}
-        {#                                {{ value }} min(s)#}
-        {#                            {% else %}#}
-        {#                                {{ value }}#}
-        {#                            {% endif %}#}
-        {#                        </td>#}
-        {#                    </tr>#}
-        {#                {% endfor %}#}
-        {#            </table>#}
-        {#            <br>#}
-        {#            <h3>Sentiment Analysis:</h3>#}
-        {#            <table>#}
-        {#                {% for key, value in analysis_results[file_info.filename]['sentiment_analysis_dict'].items() %}#}
-        {#                    <tr>#}
-        {#                        <td>{{ key }}</td>#}
-        {#                        <td>{{ value }}</td>#}
-        {#                    </tr>#}
-        {#                {% endfor %}#}
-        {#            </table>#}
-        {#            <br>#}
-        {#            <h3>NLP Analysis:</h3>#}
-        {#            <h4 style="text-align: center;">POS Tag Analysis</h4>#}
-        {#            <canvas id="posChart_{{ loop.index }}" width="400" height="200"></canvas>#}
-        {#            <table>#}
-        {#                {% for key, value in analysis_results[file_info.filename]['nlp_analysis_dict'].items() %}#}
-        {#                    <tr>#}
-        {#                        <td>{{ key }}</td>#}
-        {#                        <td>{{ value }}</td>#}
-        {#                    </tr>#}
-        {#                {% endfor %}#}
-        {#            </table>#}
-        {#            <div class="links-container">#}
-        {#                <p>For more information on POS tags, you can visit:</p>#}
-        {#                <ul>#}
-        {#                    <li>#}
-        {#                        <a href="https://stackoverflow.com/questions/15388831/what-are-all-possible-pos-tags-of-nltk"#}
-        {#                           target="_blank">Stack Overflow - Possible POS tags of NLTK</a></li>#}
-        {#                    <li><a href="https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html"#}
-        {#                           target="_blank">Penn Treebank POS Tags</a></li>#}
-        {#                </ul>#}
-        {#            </div>#}
-        {#            <hr>#}
-        {#            <script>#}
-        {#                // Convert the analysis_results object into JSON, to prevent escape and preventing XSS attacks#}
-        {#processFilesInputData({{ analysis_results | tojson }});#}
-        {#                processFilesInputData({{ analysis_results | tojson }}, {{ file_info | tojson }}, {{ loop.index }});#}
-        {#            </script>#}
-        {#        {% endfor %}#}
+    {% elif selected_option == "files_input" %}
+        <p id="loading-message-files-input">Loading analysis result...</p>
+        <div id="files_input-container"></div>
+        {#        <p id="simpletest1"></p>#}
     {% elif selected_option == "news_article_sources" %}
         <h2>Selected News Provider Random Article Analysis:</h2>
         <p>Selected Provider: {{ selected_name }}</p>
@@ -184,17 +128,41 @@
     <button class="green-button back-button" onclick="window.location.href = '/';">Go Back to Mainpage</button>
 </div>
 
-{#{% if selected_option != "files_input" %}#}
-{#    <script>#}
-{#        processSingleInputData({{ analysis_result | tojson }});#}
-{#    </script>#}
-{#{% endif %}#}
+{% if selected_option != "files_input" %}
+    <script>
+        console.log("am i here 1?")
+        var selected_option = "{{ selected_option }}";
+        console.log("Selected Option:", "{{ selected_option }}");
+        var requestid = "{{ requestid }}";
+        pollForResult(selected_option, requestid)
+    </script>
+{% else %}
+    <script>
+        console.log("am i here 2?")
+        var selected_option = "{{ selected_option }}";
+        var requestid = "{{ requestid }}";
+        console.log("Selected Option:", "{{ selected_option }}");
+        console.log("Request ID:", requestid);
+        pollForResult(selected_option, requestid);
+    </script>
+{% endif %}
 
-<script>
-    console.log("Selected Option:", "{{ selected_option }}");
-    console.log("Request ID:", "{{ requestid }}");
-    pollForResult("{{ selected_option }}", "{{ requestid }}");
-</script>
+{#<script>#}
+{#    var selected_option = "{{ selected_option }}";#}
+{#    console.log("Selected Option:", "{{ selected_option }}");#}
+{#    if (selected_option === "text_input") {#}
+{#        var requestid = "{{ requestid }}";#}
+{#        pollForResult(selected_option, requestid)#}
+{#    }#}
+{#    if (selected_option === "files_input") {#}
+{#        var requestid_list = {{ requestid_list | tojson }};#}
+{#        pollForFileInputsResults(selected_option, requestid_list);#}
+{#    }#}
+{#    if (selected_option === "news_article_sources") {#}
+{#        var requestid = "{{ requestid }}";#}
+{#        pollForResult(selected_option, requestid)#}
+{#    }#}
+{#</script>#}
 
 </body>
 </html>

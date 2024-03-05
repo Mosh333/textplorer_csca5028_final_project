@@ -53,9 +53,7 @@ def setup_routes(app):
         elif selected_option == "files_input":
             # Handle file upload
             uploaded_files = request.files.getlist("file_input")
-            files_info = []
-            analysis_results = {}
-            requestid_list = {}
+            files_info = {}  # Dictionary to hold all file information
 
             for file in uploaded_files:
                 # Process each uploaded file
@@ -64,23 +62,21 @@ def setup_routes(app):
                 file.seek(0)
                 text_data = file.read().decode("utf-8")
                 # Add filename and file size to files_info list
-                files_info.append({"filename": filename, "file_size": file_size, "text_content": text_data})
+                # {"filename": filename, "file_size": file_size, "text_content": text_data}
+                files_info[filename] = {"file_size": file_size, "text_content": text_data}
 
-                # Analyze content of each file
-                single_analysis_result = compute_full_analysis(text_data)
-                analysis_results[filename] = single_analysis_result
+            # offload the computation heavy workload to rabbitmq's producer side
+            # will bundle the entire data as one requestid
+            # Generate the requestid and pass it along
+            requestid = uuid.uuid4()
 
-                # Generate the requestid and pass it along
-                requestid_list[filename] = uuid.uuid4()
-                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                insert_analysis_results(
-                    {"filename": filename, "analysis_result": single_analysis_result, "timestamp": timestamp},
-                    requestid_list[filename])
+            # send one big request since multiple smaller request is giving me a hard time
+            send_message_to_queue(selected_option, files_info, requestid)
 
-            print(analysis_results)
             # Render the echo page with the uploaded file information
-            return render_template("text-analysis.html", selected_option=selected_option, files_info=files_info,
-                                   analysis_results=analysis_results, requestid_list=requestid_list)
+            return render_template("text-analysis.html", selected_option=selected_option,
+                                   requestid=requestid)  # ,analysis_results=analysis_results,files_info=files_info,
+
         elif selected_option == "news_article_sources":
             # Receive the news_article_sources submitted
             news_article_sources_value = request.form.get("news_article_sources")
@@ -92,24 +88,6 @@ def setup_routes(app):
 
             # offload the computation heavy workload to rabbitmq's producer side
             send_message_to_queue(selected_option, news_article_sources_value, requestid)
-
-            # print(news_article_sources_value)
-            # try:
-            #     if selected_name == "CTV News":
-            #         article_text_data, article_link = fetch_random_ctv_news_article_paragraphs()
-            #     elif selected_name == "ABC News":
-            #         article_text_data, article_link = fetch_random_abcnews_post_article_paragraphs()
-            #     elif selected_name == "Al Jazeera":
-            #         article_text_data, article_link = fetch_random_aljazeeera_post_article_paragraphs()
-            #     else:
-            #         return "Invalid news outlet source selected"
-            #
-            #     analysis_result = compute_full_analysis(article_text_data)
-            #     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            #
-            #     insert_analysis_results({"selected_name": selected_name, "selected_url": selected_url,
-            #                              "article_text_data": article_text_data, "analysis_result": analysis_result,
-            #                              "timestamp": timestamp}, requestid)
 
             return render_template("text-analysis.html", selected_option=selected_option,
                                    selected_name=selected_name,
@@ -151,7 +129,7 @@ def setup_routes(app):
                     return jsonify({"status": "in_progress"})
                 else:
                     print("here2")
-                    return jsonify({"status": "complete", "analysis_result": analysis_results})
+                    return jsonify({"status": "complete", "analysis_results": analysis_results})
             elif selected_option == "news_article_sources":
                 analysis_result = receive_message_from_queue(selected_option, requestid)
                 print("from perform_offloaded_computation(), what is analysis_result?: ", analysis_result)

@@ -4,7 +4,7 @@ import pika
 import json
 
 
-def send_message_to_queue(selected_option, text_for_analysis, requestid: uuid.UUID, ):
+def send_message_to_queue(selected_option, text_for_analysis, requestid: uuid.UUID):
     # Get the RabbitMQ connection URL from the environment variable
     rabbitmq_url = os.environ.get("CLOUDAMQP_URL")
 

@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 def process_message(message_data):
     # Extract selected_option, requestid, and text_for_analysis
+    # print("pikachu")
     selected_option = message_data.get("selected_option")
     requestid_str = message_data.get("requestid")
     requestid = uuid.UUID(requestid_str)
@@ -47,10 +48,38 @@ def process_message(message_data):
             logger.error("Error processing message: %s", e)
             return None
     elif selected_option == "files_input":
+        # files_info looks like:
+        # {dict1, dict2, dict3...}
+        # where each dict looks like: {"filename": filename, "file_size": file_size, "text_content": text_data}
         # Print the extracted data
+        analysis_results = {}
+        files_info = message_data.get("text_for_analysis")
+
         print("Selected Option:", selected_option)
         print("Request ID:", requestid)
-        print("Text for Analysis:", text_for_analysis)
+        print("Text for Analysis:", files_info)
+
+        # Analyze contents of all the files
+        for filename, file_info in files_info.items():
+            text_content = file_info["text_content"]
+            file_size = file_info["file_size"]
+            # Analyze content of the given file
+            single_analysis_result = compute_full_analysis(text_content)
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            analysis_results[filename] = {
+                "analysis_result": single_analysis_result,
+                "text_content": text_content,
+                "file_size": file_size,
+                "timestamp": timestamp
+            }
+            insert_analysis_results(
+                {"filename": filename, "analysis_result": single_analysis_result, "timestamp": timestamp},
+                uuid.uuid4())
+
+        print('We are definitely returning the following &&&&&&&&&&&&&&&&&&&&&&&&&&&&&: ')
+        # add the bundle requestid identifier
+        analysis_results['request_id'] = requestid
+        return analysis_results
     elif selected_option == "news_article_sources":
         # Print the extracted data
         print("Selected Option:", selected_option)
