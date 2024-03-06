@@ -1,6 +1,8 @@
 import os
 import unittest
 from unittest.mock import patch
+from uuid import UUID
+
 from src.models.database import insert_analysis_results, fetch_database_info
 
 
@@ -19,7 +21,9 @@ class TestDatabase(unittest.TestCase):
             "num_sentences": 5,
             "sentiment": "positive"
         }
-        insert_analysis_results(analysis_results)
+        # random UUID data I hardcoded below
+        input_requestid = UUID('123c4567-b69b-12d3-a456-123456784000')
+        insert_analysis_results(analysis_results, input_requestid)
         mock_put_item.assert_called_once_with(Item=analysis_results)
 
     @patch("src.models.database.table.scan")
