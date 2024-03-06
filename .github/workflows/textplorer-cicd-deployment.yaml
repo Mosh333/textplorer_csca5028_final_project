@@ -38,9 +38,12 @@ jobs:
       - name: Set DYNAMODB_TABLE_NAME
         run: echo "DYNAMODB_TABLE_NAME=${{ secrets.DYNAMODB_TABLE_NAME }}" >> $GITHUB_ENV
 
+      - name: Set CLOUDAMQP_URL
+        run: echo "CLOUDAMQP_URL=${{ secrets.CLOUDAMQP_URL }}" >> $GITHUB_ENV
+
       - name: Run tests
         run: |
-          python -m unittest src.tests.test_data_collection src.tests.integration_test_routes src.tests.unit_and_mock_test_analysis src.tests.unit_and_mock_test_database
+          python -m unittest src.tests.test_data_collection src.tests.integration_test_routes src.tests.unit_and_mock_test_analysis src.tests.unit_and_mock_test_database src.tests.test_rabbitmq
       #          python -m unittest discover -s src/tests
 
       - name: Deploy to Heroku
